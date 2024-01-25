@@ -1,7 +1,5 @@
 module.exports = {
-  arrowParens: 'always',
+  $schema: 'http://json.schemastore.org/prettierrc',
   singleQuote: true,
   jsxSingleQuote: true,
-  tabWidth: 2,
-  semi: true,
 };
