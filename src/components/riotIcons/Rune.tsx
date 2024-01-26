@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const CDRAGON_URL =
   'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/';
@@ -8,14 +9,14 @@ const RUNES_REFORGED =
 export type RuneProps = {
   runeData: Riot.MatchV5.Perks;
   type?: 'keystone' | 'secondary';
-  size?: number;
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 };
 
 export const Rune = async ({
   runeData,
   type = 'keystone',
-  size = 32,
+  size = 'lg',
   className = '',
 }: RuneProps): Promise<JSX.Element> => {
   const runeDirectory = (await fetch(RUNES_REFORGED).then((res) =>
@@ -44,15 +45,19 @@ export const Rune = async ({
 
   const src = `${CDRAGON_URL}${path.toLowerCase()}`;
 
+  const sizePx = size === 'sm' ? 15 : size === 'md' ? 23 : 30;
+
   return (
-    <img
+    <Image
       src={src}
-      className={cn(className, {
-        'bg-gray-800 rounded-full shadow': type === 'keystone',
+      className={cn(className, 'bg-white/5 shadow', {
+        'rounded-lg': size === 'lg',
+        'rounded-md': size === 'md',
+        rounded: size === 'sm',
       })}
       alt={alt}
-      width={size}
-      height={size}
+      width={sizePx}
+      height={sizePx}
     />
   );
 };

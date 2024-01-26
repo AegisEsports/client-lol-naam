@@ -49,7 +49,7 @@ export const Item = async ({
   const sizePx = size === 'sm' ? 24 : size === 'md' ? 32 : 48;
 
   return (
-    <img
+    <Image
       className={iconClass}
       src={`${ITEMS_DIR}${path.toLowerCase()}`}
       height={sizePx}

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 // There's a file for this but whatever
 const SUMMONER_SPELLS: {
@@ -86,7 +87,7 @@ const CDRAGON_SPELLS =
 
 export type SummonerSpellProps = {
   spellId?: number;
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 };
 
@@ -96,12 +97,13 @@ export const SummonerSpell = async ({
   className = '',
 }: SummonerSpellProps) => {
   const spell = SUMMONER_SPELLS[spellId] ?? SUMMONER_SPELLS[54];
-  const imgSize = size === 'lg' ? 30 : 15;
+  const imgSize = size === 'lg' ? 30 : size === 'md' ? 23 : 15;
 
   return (
-    <img
+    <Image
       className={cn(className, 'shadow-icon', {
         'rounded-lg': size === 'lg',
+        'rounded-md': size === 'md',
         rounded: size === 'sm',
       })}
       src={`${CDRAGON_SPELLS}${spell.img}`}
