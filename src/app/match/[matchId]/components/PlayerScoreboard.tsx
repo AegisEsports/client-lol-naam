@@ -49,7 +49,13 @@ export const PlayerScoreboard = async ({
         ) / 100;
 
   return (
-    <div className='flex items-center'>
+    <div
+      className={cn('flex items-center', {
+        'gap-1': size === 'sm',
+        'gap-1.5': size === 'md',
+        'gap-2': size === 'lg',
+      })}
+    >
       {show.role && <Role role={participant.teamPosition} size={size} />}
 
       {show.level && size === 'sm' && (
@@ -58,7 +64,7 @@ export const PlayerScoreboard = async ({
         </div>
       )}
 
-      <div className='relative ml-2'>
+      <div className='relative'>
         <ChampIcon champId={champId} size={size} />
         {size !== 'sm' && show.level && (
           <div
@@ -75,47 +81,55 @@ export const PlayerScoreboard = async ({
         )}
       </div>
 
-      {show.spells && (
-        <div
-          className={cn('flex flex-col shrink-0', {
-            'ml-1 gap-0.5': size === 'sm',
-            'ml-1.5 gap-0.5': size === 'md',
-            'ml-2 gap-1': size === 'lg',
-          })}
-        >
-          <SummonerSpell spellId={participant.summoner1Id} size={size} />
-          <SummonerSpell spellId={participant.summoner2Id} size={size} />
-        </div>
-      )}
-
-      {show.runes && (
-        <div
-          className={cn('flex flex-col items-center justify-between shrink-0', {
-            'ml-0.5 gap-0.5': size === 'sm',
-            'ml-[3px] gap-0.5': size === 'md',
-            'ml-1 gap-1': size === 'lg',
-          })}
-        >
-          <Rune runeData={participant.perks} type='keystone' size={size} />
-          <Rune
-            runeData={participant.perks}
-            type='secondary'
-            size={size}
-            className={cn({
-              'p-1': size === 'lg',
-              'p-[3px]': size === 'md',
-              'p-0.5': size === 'sm',
+      <div
+        className={cn('flex shrink-0', {
+          'gap-0.5': size !== 'lg',
+          'gap-1': size === 'lg',
+        })}
+      >
+        {show.spells && (
+          <div
+            className={cn('flex flex-col', {
+              'gap-0.5': size !== 'lg',
+              'gap-1': size === 'lg',
             })}
-          />
-        </div>
-      )}
+          >
+            <SummonerSpell spellId={participant.summoner1Id} size={size} />
+            <SummonerSpell spellId={participant.summoner2Id} size={size} />
+          </div>
+        )}
+
+        {show.runes && (
+          <div
+            className={cn(
+              'flex flex-col items-center justify-between shrink-0',
+              {
+                'gap-0.5': size !== 'lg',
+                'gap-1': size === 'lg',
+              },
+            )}
+          >
+            <Rune runeData={participant.perks} type='keystone' size={size} />
+            <Rune
+              runeData={participant.perks}
+              type='secondary'
+              size={size}
+              className={cn({
+                'p-1': size === 'lg',
+                'p-[3px]': size === 'md',
+                'p-0.5': size === 'sm',
+              })}
+            />
+          </div>
+        )}
+      </div>
 
       {show.name && (
         <div
           className={cn('font-semibold', {
-            'text-2xl mb-1 ml-3': size === 'lg',
-            'text-xl mb-[3px] ml-[9px]': size === 'md',
-            'text-lg mb-0.5 ml-1.5': size === 'sm',
+            'text-2xl mb-1': size === 'lg',
+            'text-xl mb-[3px]': size === 'md',
+            'text-lg mb-0.5': size === 'sm',
           })}
         >
           {summonerName}
@@ -127,9 +141,9 @@ export const PlayerScoreboard = async ({
           className={cn(
             'flex flex-col text-gray-200 items-center whitespace-nowrap',
             {
-              'ml-2 text-xl': size === 'lg',
-              'ml-[9px] text-md]': size === 'md',
-              'ml-1.5 text-xs': size === 'sm',
+              'text-xl': size === 'lg',
+              'text-md]': size === 'md',
+              'text-xs': size === 'sm',
             },
           )}
         >

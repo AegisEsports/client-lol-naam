@@ -101,7 +101,7 @@ export const SummonerSpell = async ({
 
   return (
     <Image
-      className={cn(className, 'shadow-icon', {
+      className={cn(className, 'shadow-tile', {
         'rounded-lg': size === 'lg',
         'rounded-md': size === 'md',
         rounded: size === 'sm',

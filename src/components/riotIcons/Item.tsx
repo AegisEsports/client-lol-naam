@@ -23,7 +23,7 @@ export const Item = async ({
 
   const item = itemLookup.find((item) => item.id === itemId);
 
-  const iconClass = cn(className, {
+  const iconClass = cn(className, 'shadow-tile', {
     'rounded-lg': size === 'lg',
     'rounded-md': size === 'md',
     rounded: size === 'sm',

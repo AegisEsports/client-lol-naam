@@ -50,7 +50,7 @@ export const Rune = async ({
   return (
     <Image
       src={src}
-      className={cn(className, 'bg-white/5 shadow', {
+      className={cn(className, 'bg-white/5 shadow-tile', {
         'rounded-lg': size === 'lg',
         'rounded-md': size === 'md',
         rounded: size === 'sm',
