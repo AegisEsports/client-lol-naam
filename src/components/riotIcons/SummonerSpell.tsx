@@ -97,14 +97,14 @@ export const SummonerSpell = async ({
   className = '',
 }: SummonerSpellProps) => {
   const spell = SUMMONER_SPELLS[spellId] ?? SUMMONER_SPELLS[54];
-  const imgSize = size === 'lg' ? 30 : size === 'md' ? 23 : 15;
+  const imgSize = size === 'lg' ? 26 : size === 'md' ? 20 : 13;
 
   return (
     <Image
       className={cn(className, 'shadow-tile', {
-        'rounded-lg': size === 'lg',
-        'rounded-md': size === 'md',
-        rounded: size === 'sm',
+        'rounded-md': size === 'lg',
+        rounded: size === 'md',
+        'rounded-sm': size === 'sm',
       })}
       src={`${CDRAGON_SPELLS}${spell.img}`}
       alt={spell.name}

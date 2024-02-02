@@ -32,7 +32,10 @@ export const Rune = async ({
 
   if (tree !== undefined) {
     if (type === 'keystone') {
-      const keystone = tree.slots[0].runes.find((rune) => rune.id === rune.id);
+      const keystone = tree.slots[0].runes.find(
+        (rune) => rune.id === runeData.styles[0].selections[0].perk,
+      );
+
       if (keystone !== undefined) {
         path = keystone.icon;
         alt = keystone.name;
@@ -45,7 +48,7 @@ export const Rune = async ({
 
   const src = `${CDRAGON_URL}${path.toLowerCase()}`;
 
-  const sizePx = size === 'sm' ? 15 : size === 'md' ? 23 : 30;
+  const sizePx = size === 'sm' ? 13 : size === 'md' ? 20 : 26;
 
   return (
     <Image
