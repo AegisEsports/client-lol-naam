@@ -1,13 +1,14 @@
-import plugin from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 import defaultTheme from 'tailwindcss/defaultTheme';
+import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     textShadow: {
-      sm: '0 1px 2px var(--tw-shadow-color)',
-      DEFAULT: '0 2px 4px var(--tw-shadow-color)',
-      lg: '0 8px 16px var(--tw-shadow-color)',
+      sm: '0 0 2px var(--tw-shadow-color)',
+      DEFAULT: '0 0 4px var(--tw-shadow-color)',
+      lg: '0 0 16px var(--tw-shadow-color)',
     },
     extend: {
       fontFamily: {
@@ -23,12 +24,23 @@ export default {
     plugin(({ matchUtilities, theme }) => {
       matchUtilities(
         {
-          'text-shadow': (value) => ({
+          'text-glow': (value) => ({
             textShadow: value,
           }),
         },
         { values: theme('textShadow') },
       );
     }),
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.scrollbar-hidden': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    }),
   ],
-};
+} satisfies Config;

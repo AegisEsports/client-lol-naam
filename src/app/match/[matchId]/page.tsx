@@ -3,7 +3,7 @@ import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { Rune } from '@/components/riotIcons/Rune';
 
 export async function generateStaticParams() {
-  return [{ matchId: '4421881781' }];
+  return ['4421881781', '4456011940'].map((matchId) => ({ matchId: matchId }));
 }
 
 export default async function Page({
@@ -18,7 +18,18 @@ export default async function Page({
   return (
     <div className='flex flex-col p-4'>
       MatchID : {params.matchId}
-      <Scoreboard matchData={data} />
+      Large:
+      <Scoreboard matchData={data} size='lg' />
+      Medium:
+      <Scoreboard matchData={data} size='md' />
+      Small:
+      <Scoreboard matchData={data} size='sm' />
+      LargeIcon:
+      <Scoreboard matchData={data} size='lg' champIcon />
+      MediumIcon:
+      <Scoreboard matchData={data} size='md' champIcon />
+      SmallIcon:
+      <Scoreboard matchData={data} size='sm' champIcon />
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
   );

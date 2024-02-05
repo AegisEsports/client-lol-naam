@@ -28,7 +28,7 @@ export const DamageMeter = ({
           'text-xs': size === 'sm',
           'text-md': size === 'md',
           'text-xl': size === 'lg',
-          'font-semibold [text-shadow:_0_0_4px_white]': damage === maxDamage,
+          'font-semibold text-glow shadow-white': damage === maxDamage,
         })}
       >
         {damage.toLocaleString()}

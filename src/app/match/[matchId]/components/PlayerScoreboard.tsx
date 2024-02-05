@@ -1,4 +1,5 @@
 import { DamageMeter } from '@/app/match/[matchId]/components/DamageMeter';
+import { Carousel } from '@/components/Carousel';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { ChampScoreboard } from '@/components/riotIcons/ChampScoreboard';
 import { Item } from '@/components/riotIcons/Item';
@@ -11,6 +12,7 @@ import { cn } from '@/lib/utils';
 export type PlayerScoreboardProps = {
   participant: Riot.MatchV5.Participant;
   maxDamage: number;
+  maxDamageTaken: number;
   size?: 'sm' | 'md' | 'lg';
   options?: {
     role?: boolean;
@@ -23,12 +25,14 @@ export type PlayerScoreboardProps = {
     cs?: boolean;
     wards?: boolean;
     useChampSplash?: boolean;
+    group?: string;
   };
 };
 
 export const PlayerScoreboard = async ({
   participant,
   maxDamage,
+  maxDamageTaken,
   size = 'md',
   options = {},
 }: PlayerScoreboardProps): Promise<JSX.Element> => {
@@ -43,6 +47,7 @@ export const PlayerScoreboard = async ({
     cs: true,
     wards: true,
     useChampSplash: true,
+    group: undefined,
   };
 
   const show = Object.assign({}, defaults, options);
@@ -70,6 +75,7 @@ export const PlayerScoreboard = async ({
     timePlayed,
     totalMinionsKilled,
     neutralMinionsKilled,
+    goldEarned,
   } = participant;
 
   const summonerName = await getSummonerName(puuid);
@@ -77,9 +83,9 @@ export const PlayerScoreboard = async ({
   const summonerNameComponent = (
     <div
       className={cn('font-semibold shrink-0', {
-        'text-2xl mb-1 w-40': size === 'lg',
-        'text-xl mb-[3px] w-32': size === 'md',
-        'text-md mb-0.5 w-28': size === 'sm',
+        'text-2xl mb-1 w-60': size === 'lg',
+        'text-xl mb-[3px] w-48': size === 'md',
+        'text-md mb-0.5 w-36': size === 'sm',
       })}
     >
       {summonerName}
@@ -109,10 +115,12 @@ export const PlayerScoreboard = async ({
       ? 'Perfect'
       : Math.round(((kills + assists) * 100) / deaths) / 100;
 
-  const csm =
-    Math.round(
-      ((totalMinionsKilled + neutralMinionsKilled) * 600) / timePlayed,
-    ) / 10;
+  const csMin = (
+    ((totalMinionsKilled + neutralMinionsKilled) * 60) /
+    timePlayed
+  ).toFixed(1);
+
+  const goldMin = ((goldEarned * 60) / timePlayed).toFixed(0);
 
   return (
     <div
@@ -250,25 +258,59 @@ export const PlayerScoreboard = async ({
         </>
       )}
 
-      <DamageMeter
-        damage={totalDamageDealtToChampions}
-        maxDamage={maxDamage}
-        size={size}
-      />
+      <div
+        className={cn('h-full', {
+          'w-32': size === 'lg',
+          'w-24': size === 'md',
+          'w-16': size === 'sm',
+        })}
+      >
+        <Carousel
+          group={`${show.group}-damage`}
+          items={[
+            <DamageMeter
+              damage={totalDamageDealtToChampions}
+              maxDamage={maxDamage}
+              size={size}
+            />,
+            <DamageMeter
+              damage={participant.totalDamageTaken}
+              maxDamage={maxDamageTaken}
+              size={size}
+              backgroundClassName='bg-green-800'
+              className='bg-green-600'
+            />,
+          ]}
+        />
+      </div>
 
       {show.cs && (
         <div
-          className={cn(
-            'flex flex-col text-gray-200 items-center whitespace-nowrap',
-            {
-              'text-xl w-32': size === 'lg',
-              'text-md w-24': size === 'md',
-              'text-xs w-16': size === 'sm',
-            },
-          )}
+          className={cn('h-full text-gray-200', {
+            'text-lg w-32': size === 'lg',
+            'text-md w-24': size === 'md',
+            'text-xs w-16': size === 'sm',
+          })}
         >
-          <div>{totalMinionsKilled + neutralMinionsKilled}</div>
-          <div>{csm}</div>
+          <Carousel
+            group={`${show.group}-gold`}
+            items={[
+              <div className='flex flex-col items-center'>
+                <div className='font-semibold'>
+                  {(totalMinionsKilled + neutralMinionsKilled).toLocaleString()}
+                </div>
+                <div className='text-gray-400'>{csMin} / min</div>
+              </div>,
+              <div className='flex flex-col items-center'>
+                <div className='font-semibold'>
+                  {goldEarned.toLocaleString()}
+                </div>
+                <div className='text-gray-400'>
+                  {goldMin.toLocaleString()} / min
+                </div>
+              </div>,
+            ]}
+          />
         </div>
       )}
 
