@@ -1,5 +1,3 @@
-import { MutableRefObject, RefObject, useRef, useState } from 'react';
-
 type Carousel = {
   refs: (HTMLDivElement | null)[];
   currentIndex: number;
@@ -24,7 +22,6 @@ export const useCarousel = (
 
   const scrollToIndex = (carousel: Carousel, index: number) => {
     carousel.currentIndex = index;
-    console.log(index);
 
     carousel.refs[index]?.scrollIntoView({
       behavior: 'smooth',
@@ -34,10 +31,6 @@ export const useCarousel = (
   };
 
   const scrollRight = () => {
-    console.log('right');
-    console.log(carousels);
-    console.log('bro!');
-
     carousels[key].forEach((c) => {
       const nextIndex = (c.currentIndex + 1) % c.refs.length;
 
@@ -46,11 +39,9 @@ export const useCarousel = (
   };
 
   const scrollLeft = () => {
-    console.log('left');
-
     carousels[key].forEach((c) => {
       const nextIndex = (c.currentIndex - 1) % c.refs.length;
-      console.log(nextIndex);
+
       scrollToIndex(c, nextIndex);
     });
   };

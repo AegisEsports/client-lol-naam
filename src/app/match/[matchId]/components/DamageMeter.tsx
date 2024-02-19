@@ -1,20 +1,57 @@
+'use client';
+
+import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 export type DamageMeterProps = {
   damage: number;
   maxDamage: number;
+  damageTaken: number;
+  maxDamageTaken: number;
+  cc: number;
+  maxCC: number;
+  matchId?: string;
   size?: 'sm' | 'md' | 'lg';
-  className?: string;
-  backgroundClassName?: string;
+  group?: string;
 };
 
 export const DamageMeter = ({
   size = 'md',
   damage,
+  damageTaken,
+  cc,
   maxDamage,
-  className,
-  backgroundClassName,
+  maxDamageTaken,
+  maxCC,
+  group: key,
 }: DamageMeterProps): JSX.Element => {
+  const [group, setGroup] = useState<'damage' | 'damageTaken' | 'cc'>('damage');
+  const { add } = useScoreboardControls(key);
+
+  useEffect(() => {
+    add({
+      set: (string) =>
+        setGroup(
+          string === 'damage'
+            ? 'damage'
+            : string === 'damageTaken'
+              ? 'damageTaken'
+              : 'cc',
+        ),
+      values: ['damage', 'damageTaken', 'cc'],
+    });
+  }, []);
+
+  const stat =
+    group === 'damage' ? damage : group === 'damageTaken' ? damageTaken : cc;
+  const maxStat =
+    group === 'damage'
+      ? maxDamage
+      : group === 'damageTaken'
+        ? maxDamageTaken
+        : maxCC;
+
   return (
     <div
       className={cn('flex flex-col items-center justify-center h-full', {
@@ -25,37 +62,41 @@ export const DamageMeter = ({
     >
       <div
         className={cn({
-          'text-xs': size === 'sm',
-          'text-md': size === 'md',
+          'text-[.6rem]': size === 'sm',
+          'text-sm': size === 'md',
           'text-xl': size === 'lg',
-          'font-semibold text-glow shadow-white': damage === maxDamage,
+          'font-semibold text-glow shadow-white': stat === maxStat,
         })}
       >
-        {damage.toLocaleString()}
+        {stat.toLocaleString()}
       </div>
       <div
         className={cn(
-          'relative rounded-full bg-blue-900',
+          'relative rounded-full bg-blue-900 transition-all duration-300',
           {
             'w-12 h-1': size === 'sm',
             'w-16 h-1.5': size === 'md',
             'w-24 h-2': size === 'lg',
+            'bg-blue-900': group === 'damage',
+            'bg-green-900': group === 'damageTaken',
+            'bg-purple-900': group === 'cc',
           },
-          backgroundClassName,
         )}
       >
         <div
           className={cn(
-            'absolute top-0 left-0 rounded-full bg-blue-400',
+            'absolute top-0 left-0 rounded-full transition-all duration-300',
             {
               'h-1': size === 'sm',
               'h-1.5': size === 'md',
               'h-2': size === 'lg',
+              'bg-blue-400': group === 'damage',
+              'bg-green-400': group === 'damageTaken',
+              'bg-purple-400': group === 'cc',
             },
-            className,
           )}
           style={{
-            width: `${(damage * 100) / maxDamage}%`,
+            width: `${(stat * 100) / maxStat}%`,
           }}
         />
       </div>

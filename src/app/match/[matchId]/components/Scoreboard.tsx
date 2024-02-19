@@ -1,4 +1,4 @@
-import { CarouselController } from '@/app/match/[matchId]/components/CarouselController';
+import { BarController } from '@/app/match/[matchId]/components/BarController';
 import { PlayerScoreboard } from '@/app/match/[matchId]/components/PlayerScoreboard';
 import { TeamHeader } from '@/app/match/[matchId]/components/TeamHeader';
 
@@ -25,6 +25,9 @@ export const Scoreboard = ({
   );
   const maxDamageTaken = Math.max(
     ...matchData.info.participants.map((p) => p.totalDamageTaken),
+  );
+  const maxCC = Math.max(
+    ...matchData.info.participants.map((p) => p.timeCCingOthers),
   );
 
   const group = `${matchData.metadata.matchId}${size}${champIcon ? 'icon' : ''}`;
@@ -80,8 +83,7 @@ export const Scoreboard = ({
 
   return (
     <div className='flex flex-col'>
-      <CarouselController group={`${group}-gold`} />
-      <CarouselController group={`${group}-damage`} />
+      <BarController group={`${group}-dmg`} />
       <TeamHeader
         teamName={blueTeam}
         win={blueTeamData.win}
@@ -97,6 +99,7 @@ export const Scoreboard = ({
         <PlayerScoreboard
           maxDamage={maxDamage}
           maxDamageTaken={maxDamageTaken}
+          maxCC={maxCC}
           key={`player-${participant.puuid}`}
           participant={participant}
           size={size}
@@ -122,6 +125,7 @@ export const Scoreboard = ({
         <PlayerScoreboard
           maxDamage={maxDamage}
           maxDamageTaken={maxDamageTaken}
+          maxCC={maxCC}
           key={`player-${participant.puuid}`}
           participant={participant}
           size={size}

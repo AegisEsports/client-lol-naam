@@ -13,6 +13,7 @@ export type PlayerScoreboardProps = {
   participant: Riot.MatchV5.Participant;
   maxDamage: number;
   maxDamageTaken: number;
+  maxCC: number;
   size?: 'sm' | 'md' | 'lg';
   options?: {
     role?: boolean;
@@ -33,6 +34,7 @@ export const PlayerScoreboard = async ({
   participant,
   maxDamage,
   maxDamageTaken,
+  maxCC,
   size = 'md',
   options = {},
 }: PlayerScoreboardProps): Promise<JSX.Element> => {
@@ -71,6 +73,8 @@ export const PlayerScoreboard = async ({
     item5,
     item6,
     totalDamageDealtToChampions,
+    totalDamageTaken,
+    timeCCingOthers,
     win,
     timePlayed,
     totalMinionsKilled,
@@ -224,8 +228,8 @@ export const PlayerScoreboard = async ({
               'flex flex-col text-gray-200 items-center whitespace-nowrap',
               {
                 'text-xl w-32': size === 'lg',
-                'text-md w-24': size === 'md',
-                'text-xs w-16': size === 'sm',
+                'text-sm w-24': size === 'md',
+                'text-[.6rem] w-16': size === 'sm',
               },
             )}
           >
@@ -265,22 +269,15 @@ export const PlayerScoreboard = async ({
           'w-16': size === 'sm',
         })}
       >
-        <Carousel
-          group={`${show.group}-damage`}
-          items={[
-            <DamageMeter
-              damage={totalDamageDealtToChampions}
-              maxDamage={maxDamage}
-              size={size}
-            />,
-            <DamageMeter
-              damage={participant.totalDamageTaken}
-              maxDamage={maxDamageTaken}
-              size={size}
-              backgroundClassName='bg-green-800'
-              className='bg-green-600'
-            />,
-          ]}
+        <DamageMeter
+          damage={totalDamageDealtToChampions}
+          damageTaken={totalDamageTaken}
+          cc={timeCCingOthers}
+          maxDamage={maxDamage}
+          maxDamageTaken={maxDamageTaken}
+          maxCC={maxCC}
+          size={size}
+          group={show.group}
         />
       </div>
 
@@ -288,8 +285,8 @@ export const PlayerScoreboard = async ({
         <div
           className={cn('h-full text-gray-200', {
             'text-lg w-32': size === 'lg',
-            'text-md w-24': size === 'md',
-            'text-xs w-16': size === 'sm',
+            'text-sm w-24': size === 'md',
+            'text-[.6rem] w-16': size === 'sm',
           })}
         >
           <Carousel
