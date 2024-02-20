@@ -58,9 +58,10 @@ export const PlayerScoreboard = async ({
     visionWardsBoughtInGame,
     wardsPlaced,
     wardsKilled,
+    summonerName,
   } = participant;
 
-  const summonerName = await getSummonerName(puuid);
+  // const summonerName = await getSummonerName(puuid);
 
   const summonerNameComponent = (
     <div
