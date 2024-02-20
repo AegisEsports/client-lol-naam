@@ -1,8 +1,7 @@
 'use client';
 
-import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
+import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 
 export type TeamHeaderProps = {
   teamName: string;
@@ -28,7 +27,7 @@ export const TeamHeader = ({
 }: TeamHeaderProps): JSX.Element => {
   return (
     <div
-      className={cn('flex font-semibold shrink-0', {
+      className={cn('flex font-semibold shrink-0 items-center', {
         'text-2xl p-2 gap-2': size === 'lg',
         'text-lg p-1.5 gap-1.5 ': size === 'md',
         'text-sm p-1 gap-1': size === 'sm',
@@ -39,10 +38,12 @@ export const TeamHeader = ({
       <div className='font-bold'>{win ? 'Victory' : 'Defeat'}</div>
       <div className='font-normal text-gray-500'>({teamName})</div>
       <div className='text-gray-600'>·</div>
+      <ScoreboardIcon type='kda' size={size} />
       <div>
         {kills} / {deaths} / {assists}
       </div>
       <div className='text-gray-600'>·</div>
+      <ScoreboardIcon type='gold' size={size} />
       <div>{gold.toLocaleString()}</div>
       <div
         className={cn('ml-auto items-center', {

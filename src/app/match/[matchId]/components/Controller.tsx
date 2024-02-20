@@ -3,6 +3,16 @@
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
+
+const GOLD = '/images/mask-icon-gold.png';
+const SWORD = '/svg/scoreboard-sword-icon.svg';
+const SHIELD = '/svg/scoreboard-stat-switcher-shield.svg';
+const CC_SCORE = '/svg/scoreboard-stat-switcher-cc-score.svg';
+const MINIONS = '/svg/scoreboard-stat-switcher-minions-slain.svg';
+const EYE = '/svg/scoreboard-stat-switcher-eye.svg';
+const ARROW = '/svg/scoreboard-stat-switcher-arrow.svg';
 
 export type ControllerProps = {
   group: string;
@@ -29,6 +39,7 @@ export const Controller = ({
     moveRight: right2,
   } = useScoreboardControls(`${group}-gold`);
 
+  const iconSize = size === 'sm' ? 16 : size === 'md' ? 24 : 32;
   useEffect(() => {
     add1({
       set: (string) =>
@@ -69,15 +80,20 @@ export const Controller = ({
         })}
       >
         <div className={buttonClassName} onClick={left1}>
-          {'<'}
+          <ScoreboardIcon type='leftarrow' size={size} />
         </div>
-        {group1 === 'damage'
-          ? 'Dmg'
-          : group1 === 'damageTaken'
-            ? 'Tanked'
-            : 'CC'}
+        <ScoreboardIcon
+          type={
+            group1 === 'damage'
+              ? 'sword'
+              : group1 === 'damageTaken'
+                ? 'shield'
+                : 'cc'
+          }
+          size={size}
+        />
         <div className={buttonClassName} onClick={right1}>
-          {'>'}
+          <ScoreboardIcon type='rightarrow' size={size} />
         </div>
       </div>
       <div
@@ -88,11 +104,17 @@ export const Controller = ({
         })}
       >
         <div className={buttonClassName} onClick={left2}>
-          {'<'}
+          <ScoreboardIcon type='leftarrow' size={size} />
         </div>
-        {group2 === 'gold' ? 'Gold' : group2 === 'cs' ? 'CS' : 'Vision'}
+        <ScoreboardIcon
+          type={
+            group2 === 'gold' ? 'gold' : group2 === 'cs' ? 'minions' : 'eye'
+          }
+          size={size}
+        />
+
         <div className={buttonClassName} onClick={right2}>
-          {'>'}
+          <ScoreboardIcon type='rightarrow' size={size} />
         </div>
       </div>
     </div>
