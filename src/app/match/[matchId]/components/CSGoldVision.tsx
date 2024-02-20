@@ -40,7 +40,7 @@ export const CSGoldVision = ({
 
   return (
     <div
-      className={cn('flex flex-col text-gray-400 items-center', {
+      className={cn('flex flex-col text-gray-400 items-center shrink-0', {
         'text-lg w-32': size === 'lg',
         'text-sm w-24': size === 'md',
         'text-[.6rem] w-16 ': size === 'sm',

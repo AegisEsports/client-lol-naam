@@ -24,12 +24,6 @@ export default async function Page({
       <Scoreboard matchData={data} size='md' />
       Small:
       <Scoreboard matchData={data} size='sm' />
-      LargeIcon:
-      <Scoreboard matchData={data} size='lg' champIcon />
-      MediumIcon:
-      <Scoreboard matchData={data} size='md' champIcon />
-      SmallIcon:
-      <Scoreboard matchData={data} size='sm' champIcon />
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
   );

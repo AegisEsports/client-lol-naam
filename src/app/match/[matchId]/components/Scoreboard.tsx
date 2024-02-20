@@ -83,8 +83,6 @@ export const Scoreboard = ({
 
   return (
     <div className='flex flex-col'>
-      <BarController group={`${group}-dmg`} />
-      <BarController group={`${group}-gold`} />
       <TeamHeader
         teamName={blueTeam}
         win={blueTeamData.win}
@@ -105,10 +103,8 @@ export const Scoreboard = ({
           key={`player-${participant.puuid}`}
           participant={participant}
           size={size}
-          options={{
-            useChampSplash: !champIcon,
-            group,
-          }}
+          group={group}
+          icon={champIcon}
         />
       ))}
       <div className='h-4' />
@@ -132,10 +128,8 @@ export const Scoreboard = ({
           key={`player-${participant.puuid}`}
           participant={participant}
           size={size}
-          options={{
-            useChampSplash: !champIcon,
-            group,
-          }}
+          group={group}
+          icon={champIcon}
         />
       ))}
     </div>

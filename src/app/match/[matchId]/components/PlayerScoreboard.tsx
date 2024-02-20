@@ -16,19 +16,8 @@ export type PlayerScoreboardProps = {
   maxDamageTaken: number;
   maxCC: number;
   size?: 'sm' | 'md' | 'lg';
-  options?: {
-    role?: boolean;
-    level?: boolean;
-    spells?: boolean;
-    runes?: boolean;
-    items?: boolean;
-    name?: boolean;
-    kda?: boolean;
-    cs?: boolean;
-    wards?: boolean;
-    useChampSplash?: boolean;
-    group?: string;
-  };
+  icon?: boolean;
+  group?: string;
 };
 
 export const PlayerScoreboard = async ({
@@ -37,24 +26,9 @@ export const PlayerScoreboard = async ({
   maxDamageTaken,
   maxCC,
   size = 'md',
-  options = {},
+  icon = false,
+  group,
 }: PlayerScoreboardProps): Promise<JSX.Element> => {
-  const defaults = {
-    role: true,
-    level: true,
-    spells: true,
-    runes: true,
-    items: true,
-    name: true,
-    kda: true,
-    cs: true,
-    wards: true,
-    useChampSplash: true,
-    group: undefined,
-  };
-
-  const show = Object.assign({}, defaults, options);
-
   const {
     champLevel,
     championId,
@@ -118,10 +92,113 @@ export const PlayerScoreboard = async ({
     </div>
   );
 
+  const spellComponent = (
+    <div
+      className={cn('flex shrink-0', {
+        'gap-0.5 m-0.5': size !== 'lg',
+        'gap-1 m-1': size === 'lg',
+      })}
+    >
+      <div
+        className={cn('flex flex-col', {
+          'gap-0.5': size !== 'lg',
+          'gap-1': size === 'lg',
+        })}
+      >
+        <SummonerSpell spellId={summoner1Id} size={size} />
+        <SummonerSpell spellId={summoner2Id} size={size} />
+      </div>
+
+      <div
+        className={cn('flex flex-col items-center justify-between shrink-0', {
+          'gap-0.5': size !== 'lg',
+          'gap-1': size === 'lg',
+        })}
+      >
+        <Rune runeData={perks} type='keystone' size={size} />
+        <Rune
+          runeData={perks}
+          type='secondary'
+          size={size}
+          className={cn({
+            'p-1': size === 'lg',
+            'p-[3px]': size === 'md',
+            'p-0.5': size === 'sm',
+          })}
+        />
+      </div>
+    </div>
+  );
+
   const kda =
     deaths === 0
       ? 'Perfect'
       : Math.round(((kills + assists) * 100) / deaths) / 100;
+
+  const kdaComponent = (
+    <div
+      className={cn(
+        'flex flex-col text-gray-200 items-center whitespace-nowrap shrink-0',
+        {
+          'text-xl w-32': size === 'lg',
+          'text-sm w-24': size === 'md',
+          'text-[.6rem] w-16': size === 'sm',
+        },
+      )}
+    >
+      <div
+        className={cn('flex mt-auto font-semibold', {
+          'gap-1': size === 'lg',
+          'gap-[3px]': size === 'md',
+          'gap-0.5': size === 'sm',
+        })}
+      >
+        <span>{kills}</span>
+        <span className='text-gray-500 font-normal'>/</span>
+        <span>{deaths}</span>
+        <span className='text-gray-500 font-normal'>/</span>
+        <span>{assists}</span>
+      </div>
+      <div className='mb-auto'>
+        <span
+          className={cn('font-semibold', {
+            'text-orange-400': kda === 'Perfect' || kda >= 5,
+            'text-blue-400': kda !== 'Perfect' && kda >= 3 && kda < 5,
+            'text-white': kda !== 'Perfect' && kda < 3,
+          })}
+        >
+          {kda === 'Perfect' ? kda : `${kda.toFixed(2)}`}
+        </span>
+        <span className='text-gray-300'> KDA</span>
+      </div>
+    </div>
+  );
+
+  const damageComponent = (
+    <DamageMeter
+      damage={totalDamageDealtToChampions}
+      damageTaken={totalDamageTaken}
+      cc={timeCCingOthers}
+      maxDamage={maxDamage}
+      maxDamageTaken={maxDamageTaken}
+      maxCC={maxCC}
+      size={size}
+      group={`${group}-dmg`}
+    />
+  );
+
+  const statComponent = (
+    <CSGoldVision
+      gold={goldEarned}
+      cs={totalMinionsKilled + neutralMinionsKilled}
+      timePlayed={timePlayed}
+      controlWards={visionWardsBoughtInGame}
+      wardsPlaced={wardsPlaced}
+      wardsKilled={wardsKilled}
+      group={`${group}-gold`}
+      size={size}
+    />
+  );
 
   return (
     <div
@@ -130,174 +207,57 @@ export const PlayerScoreboard = async ({
         'gap-1.5 h-12 border-l-[3px]': size === 'md',
         'gap-2 h-16 border-l-4': size === 'lg',
 
-        'pl-2': size === 'lg' && !show.useChampSplash,
-        'pl-1.5': size === 'md' && !show.useChampSplash,
-        'pl-1': size === 'sm' && !show.useChampSplash,
+        'pl-2': size === 'lg' && icon,
+        'pl-1.5': size === 'md' && icon,
+        'pl-1': size === 'sm' && icon,
 
         'border-blue-400': win,
         'border-red-400': !win,
       })}
     >
-      {!show.useChampSplash && show.role && (
-        <Role role={teamPosition} size={size} />
-      )}
-
-      {!show.useChampSplash && show.level && size === 'sm' && (
-        <div className='font-semibold text-md'>{champLevel}</div>
-      )}
-
-      {show.useChampSplash && (
-        <ChampScoreboard level={champLevel} champId={championId} size={size} />
-      )}
-
-      {!show.useChampSplash && (
-        <div className='relative'>
-          <ChampIcon champId={championId} size={size} />
-          {size !== 'sm' && show.level && (
-            <div
-              className={cn(
-                'absolute bottom-0 right-0 bg-black/50 text-center h-6 w-6 rounded-tl-lg rounded-br-lg',
-                {
-                  'text-xs h-4 w-4': size === 'md',
-                  'text-base h-6 w-6': size === 'lg',
-                },
-              )}
-            >
-              {champLevel}
-            </div>
+      {icon ? (
+        <>
+          <Role role={teamPosition} size={size} />
+          {size === 'sm' && (
+            <div className='font-semibold text-md'>{champLevel}</div>
           )}
-        </div>
-      )}
-
-      {show.useChampSplash && show.name && summonerNameComponent}
-
-      <div
-        className={cn('flex shrink-0', {
-          'gap-0.5 m-0.5': size !== 'lg',
-          'gap-1 m-1': size === 'lg',
-        })}
-      >
-        {show.spells && (
-          <div
-            className={cn('flex flex-col', {
-              'gap-0.5': size !== 'lg',
-              'gap-1': size === 'lg',
-            })}
-          >
-            <SummonerSpell spellId={summoner1Id} size={size} />
-            <SummonerSpell spellId={summoner2Id} size={size} />
-          </div>
-        )}
-
-        {show.runes && (
-          <div
-            className={cn(
-              'flex flex-col items-center justify-between shrink-0',
-              {
-                'gap-0.5': size !== 'lg',
-                'gap-1': size === 'lg',
-              },
-            )}
-          >
-            <Rune runeData={perks} type='keystone' size={size} />
-            <Rune
-              runeData={perks}
-              type='secondary'
-              size={size}
-              className={cn({
-                'p-1': size === 'lg',
-                'p-[3px]': size === 'md',
-                'p-0.5': size === 'sm',
-              })}
-            />
-          </div>
-        )}
-      </div>
-
-      {show.useChampSplash && show.items && itemComponent}
-
-      {!show.useChampSplash && show.name && summonerNameComponent}
-
-      {show.kda && (
-        <>
-          <div
-            className={cn(
-              'flex flex-col text-gray-200 items-center whitespace-nowrap',
-              {
-                'text-xl w-32': size === 'lg',
-                'text-sm w-24': size === 'md',
-                'text-[.6rem] w-16': size === 'sm',
-              },
-            )}
-          >
-            <div
-              className={cn('flex mt-auto font-semibold', {
-                'gap-1': size === 'lg',
-                'gap-[3px]': size === 'md',
-                'gap-0.5': size === 'sm',
-              })}
-            >
-              <span>{kills}</span>
-              <span className='text-gray-500 font-normal'>/</span>
-              <span>{deaths}</span>
-              <span className='text-gray-500 font-normal'>/</span>
-              <span>{assists}</span>
-            </div>
-            <div className='mb-auto'>
-              <span
-                className={cn('font-semibold', {
-                  'text-orange-400': kda === 'Perfect' || kda >= 5,
-                  'text-blue-400': kda !== 'Perfect' && kda >= 3 && kda < 5,
-                  'text-white': kda !== 'Perfect' && kda < 3,
-                })}
+          <div className='relative'>
+            <ChampIcon champId={championId} size={size} />
+            {size !== 'sm' && (
+              <div
+                className={cn(
+                  'absolute bottom-0 right-0 bg-black/50 text-center h-6 w-6 rounded-tl-lg rounded-br-lg',
+                  {
+                    'text-xs h-4 w-4': size === 'md',
+                    'text-base h-6 w-6': size === 'lg',
+                  },
+                )}
               >
-                {kda === 'Perfect' ? kda : `${kda.toFixed(2)}`}
-              </span>
-              <span className='text-gray-300'> KDA</span>
-            </div>
+                {champLevel}
+              </div>
+            )}
           </div>
-        </>
-      )}
-
-      <div
-        className={cn('h-full', {
-          'w-32': size === 'lg',
-          'w-24': size === 'md',
-          'w-16': size === 'sm',
-        })}
-      >
-        <DamageMeter
-          damage={totalDamageDealtToChampions}
-          damageTaken={totalDamageTaken}
-          cc={timeCCingOthers}
-          maxDamage={maxDamage}
-          maxDamageTaken={maxDamageTaken}
-          maxCC={maxCC}
-          size={size}
-          group={`${show.group}-dmg`}
-        />
-      </div>
-
-      {!show.useChampSplash && show.items && (
-        <>
-          <div />
-          <div />
-          <div />
+          {spellComponent}
+          {summonerNameComponent}
+          {kdaComponent}
+          {damageComponent}
           {itemComponent}
+          {statComponent}
         </>
-      )}
-
-      {show.cs && (
-        <CSGoldVision
-          gold={goldEarned}
-          cs={totalMinionsKilled + neutralMinionsKilled}
-          timePlayed={timePlayed}
-          controlWards={visionWardsBoughtInGame}
-          wardsPlaced={wardsPlaced}
-          wardsKilled={wardsKilled}
-          group={`${show.group}-gold`}
-          size={size}
-        />
+      ) : (
+        <>
+          <ChampScoreboard
+            level={champLevel}
+            champId={championId}
+            size={size}
+          />
+          {summonerNameComponent}
+          {spellComponent}
+          {itemComponent}
+          {kdaComponent}
+          {damageComponent}
+          {statComponent}
+        </>
       )}
     </div>
   );

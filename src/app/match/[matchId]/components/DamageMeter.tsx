@@ -54,11 +54,14 @@ export const DamageMeter = ({
 
   return (
     <div
-      className={cn('flex flex-col items-center justify-center h-full', {
-        'gap-2': size === 'lg',
-        'gap-1.5': size === 'md',
-        'gap-1': size === 'sm',
-      })}
+      className={cn(
+        'flex flex-col items-center justify-center h-full shrink-0',
+        {
+          'gap-2 w-32': size === 'lg',
+          'gap-1.5 w-24': size === 'md',
+          'gap-1 w-16': size === 'sm',
+        },
+      )}
     >
       <div
         className={cn({
