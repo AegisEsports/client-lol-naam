@@ -28,7 +28,10 @@ export const Tooltip = ({
   tooltip = 'Tooltip',
   placement = 'top',
   children,
-  delay,
+  delay = {
+    open: 300,
+    close: 0,
+  },
 }: TooltipProps): JSX.Element => {
   const [open, setOpen] = useState(false);
 
