@@ -84,6 +84,7 @@ export const Scoreboard = ({
   return (
     <div className='flex flex-col'>
       <BarController group={`${group}-dmg`} />
+      <BarController group={`${group}-gold`} />
       <TeamHeader
         teamName={blueTeam}
         win={blueTeamData.win}
@@ -94,6 +95,7 @@ export const Scoreboard = ({
         deaths={blueTeamStats.deaths}
         assists={blueTeamStats.assists}
         gold={blueTeamStats.gold}
+        group={group}
       />
       {blueTeamPlayers.map((participant) => (
         <PlayerScoreboard
@@ -120,6 +122,7 @@ export const Scoreboard = ({
         deaths={redTeamStats.deaths}
         assists={redTeamStats.assists}
         gold={redTeamStats.gold}
+        group={group}
       />
       {redTeamPlayers.map((participant) => (
         <PlayerScoreboard

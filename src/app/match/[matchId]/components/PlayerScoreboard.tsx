@@ -1,3 +1,4 @@
+import { CSGoldVision } from '@/app/match/[matchId]/components/CSGoldVision';
 import { DamageMeter } from '@/app/match/[matchId]/components/DamageMeter';
 import { Carousel } from '@/components/Carousel';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
@@ -80,6 +81,9 @@ export const PlayerScoreboard = async ({
     totalMinionsKilled,
     neutralMinionsKilled,
     goldEarned,
+    visionWardsBoughtInGame,
+    wardsPlaced,
+    wardsKilled,
   } = participant;
 
   const summonerName = await getSummonerName(puuid);
@@ -118,13 +122,6 @@ export const PlayerScoreboard = async ({
     deaths === 0
       ? 'Perfect'
       : Math.round(((kills + assists) * 100) / deaths) / 100;
-
-  const csMin = (
-    ((totalMinionsKilled + neutralMinionsKilled) * 60) /
-    timePlayed
-  ).toFixed(1);
-
-  const goldMin = ((goldEarned * 60) / timePlayed).toFixed(0);
 
   return (
     <div
@@ -277,39 +274,9 @@ export const PlayerScoreboard = async ({
           maxDamageTaken={maxDamageTaken}
           maxCC={maxCC}
           size={size}
-          group={show.group}
+          group={`${show.group}-dmg`}
         />
       </div>
-
-      {show.cs && (
-        <div
-          className={cn('h-full text-gray-200', {
-            'text-lg w-32': size === 'lg',
-            'text-sm w-24': size === 'md',
-            'text-[.6rem] w-16': size === 'sm',
-          })}
-        >
-          <Carousel
-            group={`${show.group}-gold`}
-            items={[
-              <div className='flex flex-col items-center'>
-                <div className='font-semibold'>
-                  {(totalMinionsKilled + neutralMinionsKilled).toLocaleString()}
-                </div>
-                <div className='text-gray-400'>{csMin} / min</div>
-              </div>,
-              <div className='flex flex-col items-center'>
-                <div className='font-semibold'>
-                  {goldEarned.toLocaleString()}
-                </div>
-                <div className='text-gray-400'>
-                  {goldMin.toLocaleString()} / min
-                </div>
-              </div>,
-            ]}
-          />
-        </div>
-      )}
 
       {!show.useChampSplash && show.items && (
         <>
@@ -318,6 +285,19 @@ export const PlayerScoreboard = async ({
           <div />
           {itemComponent}
         </>
+      )}
+
+      {show.cs && (
+        <CSGoldVision
+          gold={goldEarned}
+          cs={totalMinionsKilled + neutralMinionsKilled}
+          timePlayed={timePlayed}
+          controlWards={visionWardsBoughtInGame}
+          wardsPlaced={wardsPlaced}
+          wardsKilled={wardsKilled}
+          group={`${show.group}-gold`}
+          size={size}
+        />
       )}
     </div>
   );

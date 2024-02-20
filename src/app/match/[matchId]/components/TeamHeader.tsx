@@ -10,6 +10,7 @@ export type TeamHeaderProps = {
   size: 'sm' | 'md' | 'lg';
   objectives: Riot.MatchV5.Objective;
   bans: Riot.MatchV5.Ban[];
+  group: string;
 };
 
 export const TeamHeader = ({
@@ -20,6 +21,7 @@ export const TeamHeader = ({
   deaths,
   assists,
   gold,
+  group,
 }: TeamHeaderProps): JSX.Element => {
   return (
     <div
