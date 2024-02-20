@@ -202,7 +202,7 @@ export const PlayerScoreboard = async ({
 
   return (
     <div
-      className={cn('flex items-center relative border-l-2', {
+      className={cn('flex items-center relative border-l-2 min-w-max', {
         'gap-1 h-8 border-l-2': size === 'sm',
         'gap-1.5 h-12 border-l-[3px]': size === 'md',
         'gap-2 h-16 border-l-4': size === 'lg',

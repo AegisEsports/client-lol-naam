@@ -1,4 +1,4 @@
-import { BarController } from '@/app/match/[matchId]/components/BarController';
+import { Controller } from '@/app/match/[matchId]/components/Controller';
 import { PlayerScoreboard } from '@/app/match/[matchId]/components/PlayerScoreboard';
 import { TeamHeader } from '@/app/match/[matchId]/components/TeamHeader';
 
@@ -82,19 +82,21 @@ export const Scoreboard = ({
   }
 
   return (
-    <div className='flex flex-col'>
-      <TeamHeader
-        teamName={blueTeam}
-        win={blueTeamData.win}
-        bans={blueTeamData.bans}
-        objectives={blueTeamData.objectives}
-        size={size}
-        kills={blueTeamStats.kills}
-        deaths={blueTeamStats.deaths}
-        assists={blueTeamStats.assists}
-        gold={blueTeamStats.gold}
-        group={group}
-      />
+    <div className='flex flex-col w-min'>
+      <div className='flex w-full items-center justify-between'>
+        <TeamHeader
+          teamName={blueTeam}
+          win={blueTeamData.win}
+          bans={blueTeamData.bans}
+          objectives={blueTeamData.objectives}
+          size={size}
+          kills={blueTeamStats.kills}
+          deaths={blueTeamStats.deaths}
+          assists={blueTeamStats.assists}
+          gold={blueTeamStats.gold}
+        />
+        <Controller group={group} size={size} />
+      </div>
       {blueTeamPlayers.map((participant) => (
         <PlayerScoreboard
           maxDamage={maxDamage}
@@ -118,7 +120,6 @@ export const Scoreboard = ({
         deaths={redTeamStats.deaths}
         assists={redTeamStats.assists}
         gold={redTeamStats.gold}
-        group={group}
       />
       {redTeamPlayers.map((participant) => (
         <PlayerScoreboard
