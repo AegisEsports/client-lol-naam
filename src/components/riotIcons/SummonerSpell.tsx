@@ -1,3 +1,4 @@
+import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -84,6 +85,8 @@ const SUMMONER_SPELLS: {
 
 const CDRAGON_SPELLS =
   'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/';
+const SPELLS_JSON =
+  'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json';
 
 export type SummonerSpellProps = {
   spellId?: number;
@@ -99,17 +102,32 @@ export const SummonerSpell = async ({
   const spell = SUMMONER_SPELLS[spellId] ?? SUMMONER_SPELLS[54];
   const imgSize = size === 'lg' ? 26 : size === 'md' ? 20 : 13;
 
+  const spells = (await fetch(SPELLS_JSON).then((res) =>
+    res.json(),
+  )) as CDragon.SummonerSpell[];
+
+  const spellData = spells.find((spell) => spell.id === spellId);
+
   return (
-    <Image
-      className={cn(className, 'shadow-tile', {
-        'rounded-md': size === 'lg',
-        rounded: size === 'md',
-        'rounded-sm': size === 'sm',
-      })}
-      src={`${CDRAGON_SPELLS}${spell.img}`}
-      alt={spell.name}
-      width={imgSize}
-      height={imgSize}
-    />
+    <Tooltip
+      tooltip={
+        <div className='flex flex-col font-normal text-gray-300'>
+          <div className='font-bold text-yellow-400'>{spell.name}</div>
+          <div>{spellData?.description}</div>
+        </div>
+      }
+    >
+      <Image
+        className={cn(className, 'shadow-tile', {
+          'rounded-md': size === 'lg',
+          rounded: size === 'md',
+          'rounded-sm': size === 'sm',
+        })}
+        src={`${CDRAGON_SPELLS}${spell.img}`}
+        alt={spell.name}
+        width={imgSize}
+        height={imgSize}
+      />
+    </Tooltip>
   );
 };

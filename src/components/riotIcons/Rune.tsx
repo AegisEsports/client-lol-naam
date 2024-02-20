@@ -1,10 +1,11 @@
+import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 const CDRAGON_URL =
   'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/';
 const RUNES_REFORGED =
-  'http://ddragon.leagueoflegends.com/cdn/14.2.1/data/en_US/runesReforged.json';
+  'http://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/runesReforged.json';
 
 export type RuneProps = {
   runeData: Riot.MatchV5.Perks;
@@ -29,6 +30,7 @@ export const Rune = async ({
 
   let path = 'runesicon.png';
   let alt = `${type} rune`;
+  let description = undefined;
 
   if (tree !== undefined) {
     if (type === 'keystone') {
@@ -39,6 +41,7 @@ export const Rune = async ({
       if (keystone !== undefined) {
         path = keystone.icon;
         alt = keystone.name;
+        description = keystone.longDesc;
       }
     } else {
       path = tree.icon;
@@ -50,7 +53,7 @@ export const Rune = async ({
 
   const sizePx = size === 'sm' ? 13 : size === 'md' ? 20 : 26;
 
-  return (
+  const img = (
     <Image
       src={src}
       className={cn(className, 'bg-white/5 shadow-tile', {
@@ -62,5 +65,20 @@ export const Rune = async ({
       width={sizePx}
       height={sizePx}
     />
+  );
+
+  if (!description) return img;
+
+  return (
+    <Tooltip
+      tooltip={
+        <div className='flex flex-col font-normal text-gray-300'>
+          <div className='font-bold text-green-200'>{alt}</div>
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        </div>
+      }
+    >
+      {img}
+    </Tooltip>
   );
 };

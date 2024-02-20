@@ -190,6 +190,37 @@ namespace Riot {
   }
 
   export namespace DDragon {
+    export type ItemLookup = {
+      type: string;
+      version: string;
+      data: {
+        [key: string]: {
+          id: number;
+          name: string;
+          description: string;
+          gold: {
+            base: number;
+            total: number;
+            sell: number;
+            purchasable: boolean;
+          };
+          plaintext: string;
+          tags: string[];
+          from: string[];
+          into: string[];
+          image: {
+            full: string;
+            sprite: string;
+            group: string;
+            x: number;
+            y: number;
+            w: number;
+            h: number;
+          };
+        };
+      };
+    };
+
     export type RuneLookup = {
       id: number;
       key: string;

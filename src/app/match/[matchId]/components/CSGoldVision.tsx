@@ -1,6 +1,7 @@
 'use client';
 
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
+import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
@@ -47,17 +48,39 @@ export const CSGoldVision = ({
       })}
     >
       {group === 'vision' ? (
-        <>
-          <div>
-            <span className='text-gray-200 font-semibold'>{controlWards}</span>{' '}
-            CW
+        <Tooltip
+          tooltip={
+            <div className='flex flex-col text-gray-400'>
+              <div>
+                <span className='text-white font-semibold'>{controlWards}</span>{' '}
+                wards purchased
+              </div>
+              <div>
+                <span className='text-white font-semibold'>{wardsPlaced}</span>{' '}
+                wards placed
+              </div>
+              <div>
+                <span className='text-white font-semibold'>{wardsKilled}</span>{' '}
+                wards killed
+              </div>
+            </div>
+          }
+        >
+          <div className='flex flex-col items-center'>
+            <div>
+              <span className='text-gray-200 font-semibold'>
+                {controlWards}
+              </span>{' '}
+              CW
+            </div>
+            <div>
+              <span className='text-gray-200 font-semibold'>{wardsPlaced}</span>{' '}
+              P /{' '}
+              <span className='text-gray-200 font-semibold'>{wardsKilled}</span>{' '}
+              K
+            </div>
           </div>
-          <div>
-            <span className='text-gray-200 font-semibold'>{wardsPlaced}</span> P
-            / <span className='text-gray-200 font-semibold'>{wardsKilled}</span>{' '}
-            K
-          </div>
-        </>
+        </Tooltip>
       ) : (
         <>
           <div className='font-semibold text-gray-200'>

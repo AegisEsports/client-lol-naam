@@ -19,4 +19,14 @@ namespace CDragon {
     priceTotal: number;
     iconPath: string;
   };
+
+  export type SummonerSpell = {
+    id: number;
+    name: string;
+    description: string;
+    cooldown: number;
+    gamemodes: string[];
+    iconPath: string;
+    summonerLevel: number;
+  };
 }
