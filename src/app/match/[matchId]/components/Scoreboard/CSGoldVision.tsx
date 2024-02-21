@@ -87,8 +87,10 @@ export const CSGoldVision = ({
             {(group === 'gold' ? gold : cs).toLocaleString()}
           </div>
           <div>
-            {(((group === 'gold' ? gold : cs) * 60) / timePlayed).toFixed(1)} /
-            min
+            {(((group === 'gold' ? gold : cs) * 60) / timePlayed).toFixed(
+              group === 'gold' ? 0 : 1,
+            )}{' '}
+            / min
           </div>
         </>
       )}

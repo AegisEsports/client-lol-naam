@@ -1,6 +1,7 @@
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
-import { ChampIcon } from '@/components/riotIcons/ChampIcon';
-import { Rune } from '@/components/riotIcons/Rune';
+import { getTimeline } from '@/lib/match';
+import { formatSeconds } from '@/lib/utils';
+import { format } from 'date-fns';
 
 export async function generateStaticParams() {
   return ['4421881781', '4456011940'].map((matchId) => ({ matchId: matchId }));
@@ -15,16 +16,22 @@ export default async function Page({
     `https://api.brycenaddison.com/m/NA1_${params.matchId}`,
   ).then((res) => res.json())) as Riot.MatchV5.Match;
 
+  // const timeline = await getTimeline(`NA1_${params.matchId}`);
+
   return (
-    <div className='flex flex-col p-4'>
-      MatchID : {params.matchId}
-      Large:
+    <div className='flex flex-col p-4 items-center'>
+      <div className='flex gap-2'>
+        {format(data.info.gameStartTimestamp, 'M/d/yyyy')}
+        <div className='text-gray-600'>·</div>
+        {formatSeconds(data.info.gameDuration)}
+        <div className='text-gray-600'>·</div>
+        Patch {data.info.gameVersion.split('.').slice(0, 2).join('.')}
+        <div className='text-gray-600'>·</div>
+        Game ID: {params.matchId}
+      </div>
       <Scoreboard matchData={data} size='lg' />
-      Medium:
-      <Scoreboard matchData={data} size='md' />
-      Small:
-      <Scoreboard matchData={data} size='sm' />
-      <pre>{JSON.stringify(data, null, 4)}</pre>
+      {/* <pre>{JSON.stringify(timeline, null, 4)}</pre>
+      <pre>{JSON.stringify(data, null, 4)}</pre> */}
     </div>
   );
 }

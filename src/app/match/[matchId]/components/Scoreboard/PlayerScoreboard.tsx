@@ -1,5 +1,5 @@
-import { CSGoldVision } from '@/app/match/[matchId]/components/CSGoldVision';
-import { DamageMeter } from '@/app/match/[matchId]/components/DamageMeter';
+import { CSGoldVision } from '@/app/match/[matchId]/components/Scoreboard/CSGoldVision';
+import { DamageMeter } from '@/app/match/[matchId]/components/Scoreboard/DamageMeter';
 import { Carousel } from '@/components/Carousel';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { ChampScoreboard } from '@/components/riotIcons/ChampScoreboard';
@@ -241,8 +241,8 @@ export const PlayerScoreboard = async ({
           {spellComponent}
           {summonerNameComponent}
           {kdaComponent}
-          {damageComponent}
           {itemComponent}
+          {damageComponent}
           {statComponent}
         </>
       ) : (

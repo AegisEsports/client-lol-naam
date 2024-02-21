@@ -1,18 +1,25 @@
-import { Controller } from '@/app/match/[matchId]/components/Controller';
-import { PlayerScoreboard } from '@/app/match/[matchId]/components/PlayerScoreboard';
-import { TeamHeader } from '@/app/match/[matchId]/components/TeamHeader';
+import { Controller } from '@/app/match/[matchId]/components/Scoreboard/Controller';
+import { PlayerScoreboard } from '@/app/match/[matchId]/components/Scoreboard/PlayerScoreboard';
+import { TeamHeader } from '@/app/match/[matchId]/components/Scoreboard/TeamHeader';
 
 const BLUE = 100;
 const RED = 200;
 
+/** Props for {@link Scoreboard}. */
 export type ScoreboardProps = {
+  /** Match data from Riot API. */
   matchData: Riot.MatchV5.Match;
+  /** Size of the scoreboard. */
   size?: 'sm' | 'md' | 'lg';
+  /** Whether to use champion icons instead of splashes. */
   champIcon?: boolean;
+  /** The name of the blue team. */
   blueTeam?: string;
+  /** The name of the red team. */
   redTeam?: string;
 };
 
+/** A post-game scoreboard for a single game. */
 export const Scoreboard = ({
   matchData,
   size = 'md',
