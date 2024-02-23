@@ -1,13 +1,11 @@
 import { CSGoldVision } from '@/app/match/[matchId]/components/Scoreboard/CSGoldVision';
 import { DamageMeter } from '@/app/match/[matchId]/components/Scoreboard/DamageMeter';
-import { Carousel } from '@/components/Carousel';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { ChampScoreboard } from '@/components/riotIcons/ChampScoreboard';
 import { Item } from '@/components/riotIcons/Item';
 import { Role } from '@/components/riotIcons/Role';
 import { Rune } from '@/components/riotIcons/Rune';
 import { SummonerSpell } from '@/components/riotIcons/SummonerSpell';
-import { getSummonerName } from '@/lib/getSummonerName';
 import { cn } from '@/lib/utils';
 
 export type PlayerScoreboardProps = {
@@ -18,6 +16,7 @@ export type PlayerScoreboardProps = {
   size?: 'sm' | 'md' | 'lg';
   icon?: boolean;
   group?: string;
+  patch?: string;
 };
 
 export const PlayerScoreboard = async ({
@@ -28,6 +27,7 @@ export const PlayerScoreboard = async ({
   size = 'md',
   icon = false,
   group,
+  patch,
 }: PlayerScoreboardProps): Promise<JSX.Element> => {
   const {
     champLevel,
@@ -83,13 +83,9 @@ export const PlayerScoreboard = async ({
         'gap-0.5': size === 'sm',
       })}
     >
-      <Item item={item0} size={size} />
-      <Item item={item1} size={size} />
-      <Item item={item2} size={size} />
-      <Item item={item3} size={size} />
-      <Item item={item4} size={size} />
-      <Item item={item5} size={size} />
-      <Item item={item6} size={size} />
+      {[item0, item1, item2, item3, item4, item5, item6].map((itemId) => (
+        <Item key={itemId} item={itemId} size={size} patch={patch} />
+      ))}
     </div>
   );
 

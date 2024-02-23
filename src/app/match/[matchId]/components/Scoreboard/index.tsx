@@ -1,6 +1,7 @@
 import { Controller } from '@/app/match/[matchId]/components/Scoreboard/Controller';
 import { PlayerScoreboard } from '@/app/match/[matchId]/components/Scoreboard/PlayerScoreboard';
 import { TeamHeader } from '@/app/match/[matchId]/components/Scoreboard/TeamHeader';
+import { getPatch } from '@/lib/utils';
 
 const BLUE = 100;
 const RED = 200;
@@ -84,6 +85,8 @@ export const Scoreboard = ({
     },
   );
 
+  const patch = getPatch(matchData);
+
   if (!blueTeamData || !redTeamData) {
     return <div>Team data not found</div>;
   }
@@ -114,6 +117,7 @@ export const Scoreboard = ({
           size={size}
           group={group}
           icon={champIcon}
+          patch={patch}
         />
       ))}
       <div className='h-4' />
@@ -138,6 +142,7 @@ export const Scoreboard = ({
           size={size}
           group={group}
           icon={champIcon}
+          patch={patch}
         />
       ))}
     </div>

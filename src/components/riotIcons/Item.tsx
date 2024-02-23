@@ -1,4 +1,8 @@
 import { Tooltip } from '@/components/Tooltip';
+import {
+  PlaceholderIcon,
+  getIconClass,
+} from '@/components/riotIcons/PlaceholderIcon';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -31,27 +35,12 @@ export const GenericItem = ({
 
   const itemDetails = tooltipLookup?.data[itemId.toString()];
 
-  const iconClass = cn(className, 'shadow-tile', {
-    'rounded-lg': size === 'lg',
-    'rounded-md': size === 'md',
-    rounded: size === 'sm',
-  });
-
   if (item === undefined) {
-    return (
-      <div
-        className={cn(
-          'bg-white/5',
-          {
-            'w-6 h-6': size === 'sm',
-            'w-8 h-8': size === 'md',
-            'w-12 h-12': size === 'lg',
-          },
-          iconClass,
-        )}
-      />
-    );
+    return <PlaceholderIcon size={size} className={className} />;
   }
+
+  const iconClass = cn(className, getIconClass(size));
+
   const path = item.iconPath.slice(item.iconPath.lastIndexOf('/') + 1);
 
   const sizePx = size === 'sm' ? 24 : size === 'md' ? 32 : 48;

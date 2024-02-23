@@ -1,8 +1,6 @@
 import { Selector } from '@/app/match/[matchId]/builds/components/Selector';
 import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
 import { getTimeline } from '@/lib/match';
-import { getBuilds } from '@/lib/timeline';
-import { getPatch } from '@/lib/utils';
 
 export default async function Builds({
   params,
@@ -15,11 +13,9 @@ export default async function Builds({
 
   const timeline = await getTimeline(`NA1_${params.matchId}`);
 
-  const builds = getBuilds(data, timeline);
-
   return (
     <Wrapper page='builds' matchId={params.matchId}>
-      <Selector builds={builds} patch={getPatch(data)} />
+      <Selector match={data} timeline={timeline} />
     </Wrapper>
   );
 }

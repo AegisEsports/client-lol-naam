@@ -9,7 +9,14 @@ const nextConfig = {
 
   // Uncoment to add domain whitelist
   images: {
-    domains: ['raw.communitydragon.org'],
+    remotePatterns: [
+      {
+        hostname: 'raw.communitydragon.org',
+      },
+      {
+        hostname: 'ddragon.leagueoflegends.com',
+      },
+    ],
   },
 
   webpack(config) {

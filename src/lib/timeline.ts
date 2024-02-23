@@ -7,7 +7,29 @@ export type ItemBuild = {
   }[];
 }[];
 
-const getItemBuilds = (
+const removeUndos = (
+  events: Riot.MatchV5.TimelineEvent[],
+): Riot.MatchV5.TimelineEvent[] => {
+  const transactions: Riot.MatchV5.TimelineEvent[] = [];
+
+  events.forEach((event) => {
+    if (event.type === 'ITEM_UNDO') {
+      const index = transactions.findLastIndex(
+        (t) =>
+          (t.type === 'ITEM_PURCHASED' || t.type === 'ITEM_SOLD') &&
+          event.participantId === t.participantId,
+      );
+
+      transactions.splice(index, 1);
+    } else {
+      transactions.push(event);
+    }
+  });
+
+  return transactions;
+};
+
+export const getItemBuilds = (
   timeline: Riot.MatchV5.Timeline,
 ): {
   [puuid: string]: ItemBuild;
@@ -26,12 +48,7 @@ const getItemBuilds = (
     )
     .flat();
 
-  transactions.forEach((t) => {
-    if (t.type === 'ITEM_UNDO') {
-      // TODO: filter out undid transactions
-      return;
-    }
-
+  removeUndos(transactions).forEach((t) => {
     // always true but makes typescript happy
     if (t.type !== 'ITEM_PURCHASED' && t.type !== 'ITEM_SOLD') {
       return;
@@ -86,32 +103,41 @@ const getItemBuilds = (
   );
 };
 
-export const getBuilds = (
-  match: Riot.MatchV5.Match,
+export const getSkillOrders = (
   timeline: Riot.MatchV5.Timeline,
 ): {
-  [puuid: string]: {
-    puuid: string;
-    summonerName: string;
-    championId: number;
-    build: ItemBuild;
-  };
+  [puuid: string]: number[];
 } => {
-  const builds = getItemBuilds(timeline);
+  const skillOrders: {
+    [participantId: number]: number[];
+  } = Object.fromEntries(
+    timeline.info.participants.map(({ participantId }) => [participantId, []]),
+  );
 
-  const participants = match.info.participants.map((participant) => ({
-    puuid: participant.puuid,
-    summonerName: participant.summonerName,
-    championId: participant.championId,
-  }));
+  timeline.info.frames.forEach((frame) => {
+    frame.events
+      .filter(
+        (
+          event,
+        ): event is Riot.MatchV5.TimelineEvent & { type: 'SKILL_LEVEL_UP' } =>
+          event.type === 'SKILL_LEVEL_UP',
+      )
+      .forEach((event) => {
+        skillOrders[event.participantId].push(event.skillSlot);
+      });
+  });
+
+  const puuids = Object.fromEntries(
+    timeline.info.participants.map((participant) => [
+      participant.participantId,
+      participant.puuid,
+    ]),
+  );
 
   return Object.fromEntries(
-    participants.map((participant) => [
-      participant.puuid,
-      {
-        ...participant,
-        build: builds[participant.puuid],
-      },
+    Object.entries(skillOrders).map(([participantId, skills]) => [
+      puuids[participantId],
+      skills,
     ]),
   );
 };
