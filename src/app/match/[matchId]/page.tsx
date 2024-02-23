@@ -1,6 +1,6 @@
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
-import { getTimeline } from '@/lib/match';
-import { formatSeconds } from '@/lib/utils';
+import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
+import { formatSeconds, getPatch } from '@/lib/utils';
 import { format } from 'date-fns';
 
 export async function generateStaticParams() {
@@ -19,20 +19,22 @@ export default async function Page({
   // const timeline = await getTimeline(`NA1_${params.matchId}`);
 
   return (
-    <div className='flex flex-col p-4 items-center'>
-      <div className='flex gap-2'>
-        {format(data.info.gameStartTimestamp, 'M/d/yyyy')}
-        <div className='text-gray-600'>·</div>
-        {formatSeconds(data.info.gameDuration)}
-        <div className='text-gray-600'>·</div>
-        Patch {data.info.gameVersion.split('.').slice(0, 2).join('.')}
-        <div className='text-gray-600'>·</div>
-        Game ID: {params.matchId}
-      </div>
-      <Scoreboard matchData={data} size='lg' />
-      {/* <pre>{JSON.stringify(timeline, null, 4)}</pre>
+    <Wrapper page='scoreboard' matchId={params.matchId}>
+      <div className='flex flex-col p-4 items-center'>
+        <div className='flex gap-2'>
+          {format(data.info.gameStartTimestamp, 'M/d/yyyy')}
+          <div className='text-gray-600'>·</div>
+          {formatSeconds(data.info.gameDuration)}
+          <div className='text-gray-600'>·</div>
+          Patch {getPatch(data)}
+          <div className='text-gray-600'>·</div>
+          Game ID: {params.matchId}
+        </div>
+        <Scoreboard matchData={data} size='lg' />
+        {/* <pre>{JSON.stringify(timeline, null, 4)}</pre>
       <pre>{JSON.stringify(data, null, 4)}</pre> */}
-    </div>
+      </div>
+    </Wrapper>
   );
 }
 

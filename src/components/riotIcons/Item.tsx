@@ -2,37 +2,32 @@ import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-const ITEMS_URL =
-  'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/items.json';
-const ITEMS_DIR =
-  'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/';
-const TOOLTIPS_URL =
-  'https://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/item.json';
+export const getDDragonItems = (patch?: string) =>
+  `https://ddragon.leagueoflegends.com/cdn/${patch ?? process.env.LIVE_PATCH ?? '14.3'}.1/data/en_US/item.json`;
+export const getCDragonItems = (patch?: string) =>
+  `https://raw.communitydragon.org/${patch ?? 'latest'}/plugins/rcp-be-lol-game-data/global/default/v1/items.json`;
 
-const USE_DDRAGON = false;
+const getCDragonItemsDir = (patch?: string) =>
+  `https://raw.communitydragon.org/${patch ?? 'latest'}/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/`;
 
-export type ItemProps = {
+export type GenericItemProps = {
   item?: number;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  itemLookup?: CDragon.Item[];
+  tooltipLookup?: Riot.DDragon.ItemLookup;
+  patch?: string;
 };
 
-export const Item = async ({
+export const GenericItem = ({
   item: itemId = 0,
   size = 'md',
   className = '',
-}: ItemProps): Promise<JSX.Element | null> => {
-  const itemLookup = (await fetch(ITEMS_URL).then((res) =>
-    res.json(),
-  )) as CDragon.Item[];
-
-  const tooltipLookup = USE_DDRAGON
-    ? ((await fetch(TOOLTIPS_URL).then((res) =>
-        res.json(),
-      )) as Riot.DDragon.ItemLookup)
-    : undefined;
-
-  const item = itemLookup.find((item) => item.id === itemId);
+  itemLookup,
+  tooltipLookup,
+  patch,
+}: GenericItemProps): JSX.Element => {
+  let item = itemLookup?.find((item) => item.id === itemId);
 
   const itemDetails = tooltipLookup?.data[itemId.toString()];
 
@@ -42,7 +37,7 @@ export const Item = async ({
     rounded: size === 'sm',
   });
 
-  if (item === undefined)
+  if (item === undefined) {
     return (
       <div
         className={cn(
@@ -56,7 +51,7 @@ export const Item = async ({
         )}
       />
     );
-
+  }
   const path = item.iconPath.slice(item.iconPath.lastIndexOf('/') + 1);
 
   const sizePx = size === 'sm' ? 24 : size === 'md' ? 32 : 48;
@@ -132,12 +127,46 @@ export const Item = async ({
       }
     >
       <Image
+        priority
         className={iconClass}
-        src={`${ITEMS_DIR}${path.toLowerCase()}`}
+        src={`${getCDragonItemsDir(patch)}${path.toLowerCase()}`}
         height={sizePx}
         width={sizePx}
         alt={`Item ${item.name}`}
       />
     </Tooltip>
+  );
+};
+
+export type ItemProps = {
+  item?: number;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  patch?: string;
+};
+
+export const Item = async ({
+  item: itemId = 0,
+  size = 'md',
+  className = '',
+  patch,
+}: ItemProps): Promise<JSX.Element | null> => {
+  const itemLookup = (await fetch(getCDragonItems(patch)).then((res) =>
+    res.json(),
+  )) as CDragon.Item[];
+
+  const tooltipLookup = (await fetch(getDDragonItems(patch)).then((res) =>
+    res.json(),
+  )) as Riot.DDragon.ItemLookup;
+
+  return (
+    <GenericItem
+      item={itemId}
+      size={size}
+      className={className}
+      itemLookup={itemLookup}
+      tooltipLookup={tooltipLookup}
+      patch={patch}
+    />
   );
 };

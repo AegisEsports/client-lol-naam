@@ -12,3 +12,13 @@ export function formatSeconds(duration: number) {
   const seconds = duration % 60;
   return `${minutes}:${+seconds < 10 ? '0' : ''}${seconds}`;
 }
+
+/** Fetcher function for useSWR. */
+export function fetcher(...args: Parameters<typeof fetch>) {
+  return fetch(...args).then((res) => res.json());
+}
+
+/** Get patch from match data. */
+export function getPatch(data: Riot.MatchV5.Match) {
+  return data.info.gameVersion.split('.').slice(0, 2).join('.');
+}

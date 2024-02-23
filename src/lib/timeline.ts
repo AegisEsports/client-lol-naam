@@ -3,10 +3,11 @@ export type ItemBuild = {
   items: {
     id: number;
     sold: boolean;
+    quantity: number;
   }[];
 }[];
 
-export const getItemBuilds = (
+const getItemBuilds = (
   timeline: Riot.MatchV5.Timeline,
 ): {
   [puuid: string]: ItemBuild;
@@ -54,11 +55,19 @@ export const getItemBuilds = (
     }
 
     if (t.type === 'ITEM_PURCHASED') {
-      buildThisMinute.items.push({ id: t.itemId, sold: false });
+      const item = buildThisMinute.items.find((i) => i.id === t.itemId);
+
+      if (item) item.quantity = item.quantity ? item.quantity + 1 : 1;
+      else
+        buildThisMinute.items.push({ id: t.itemId, sold: false, quantity: 1 });
     }
 
     if (t.type === 'ITEM_SOLD') {
-      buildThisMinute.items.push({ id: t.itemId, sold: true });
+      const item = buildThisMinute.items.find((i) => i.id === t.itemId);
+
+      if (item) item.quantity = item.quantity ? item.quantity + 1 : 1;
+      else
+        buildThisMinute.items.push({ id: t.itemId, sold: true, quantity: 1 });
     }
   });
 
@@ -73,6 +82,36 @@ export const getItemBuilds = (
     Object.entries(builds).map(([participantId, build]) => [
       puuids[participantId],
       build,
+    ]),
+  );
+};
+
+export const getBuilds = (
+  match: Riot.MatchV5.Match,
+  timeline: Riot.MatchV5.Timeline,
+): {
+  [puuid: string]: {
+    puuid: string;
+    summonerName: string;
+    championId: number;
+    build: ItemBuild;
+  };
+} => {
+  const builds = getItemBuilds(timeline);
+
+  const participants = match.info.participants.map((participant) => ({
+    puuid: participant.puuid,
+    summonerName: participant.summonerName,
+    championId: participant.championId,
+  }));
+
+  return Object.fromEntries(
+    participants.map((participant) => [
+      participant.puuid,
+      {
+        ...participant,
+        build: builds[participant.puuid],
+      },
     ]),
   );
 };
