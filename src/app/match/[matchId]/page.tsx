@@ -1,5 +1,6 @@
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
 import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
+import { getRecentMatches } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 import { format } from 'date-fns';
 
@@ -17,6 +18,11 @@ export default async function Page({
   ).then((res) => res.json())) as Riot.MatchV5.Match;
 
   // const timeline = await getTimeline(`NA1_${params.matchId}`);
+  // const matches = await getRecentMatches(
+  //   'kd81ZIu_tnO43jggrYeyX328OtZUUihQis4Syb7Jeefzwq_p28Fg2Zr2KNtIYwPlodA9CLmWK7UMxg',
+  // );
+
+  // console.log(matches);
 
   return (
     <Wrapper page='scoreboard' matchId={params.matchId}>

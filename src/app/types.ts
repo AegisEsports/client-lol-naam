@@ -305,7 +305,8 @@ namespace Riot {
             | 'WATER_DRAGON'
             | 'AIR_DRAGON'
             | 'CHEMTECH_DRAGON'
-            | 'HEXTECH_DRAGON';
+            | 'HEXTECH_DRAGON'
+            | 'ELDER_DRAGON';
           killerTeamId: TeamId;
           killerId: number;
           bounty: number;
@@ -390,7 +391,9 @@ namespace Riot {
       | 'YELLOW_TRINKET'
       | 'CONTROL_WARD'
       | 'SIGHT_WARD'
-      | 'BLUE_TRINKET';
+      | 'BLUE_TRINKET'
+      | 'TEEMO_MUSHROOM'
+      | 'UNDEFINED';
 
     export type ParticipantFrame = {
       championStats: ChampionStats;
