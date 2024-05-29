@@ -1,6 +1,5 @@
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
 import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
-import { getRecentMatches } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 import { format } from 'date-fns';
 
@@ -37,8 +36,6 @@ export default async function Page({
           Game ID: {params.matchId}
         </div>
         <Scoreboard matchData={data} size='lg' />
-        {/* <pre>{JSON.stringify(timeline, null, 4)}</pre>
-      <pre>{JSON.stringify(data, null, 4)}</pre> */}
       </div>
     </Wrapper>
   );
