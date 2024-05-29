@@ -1,11 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { BuildPath } from '@/app/match/[matchId]/builds/components/BuildPath';
 import { SkillOrder } from '@/app/match/[matchId]/builds/components/SkillOrder';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { getItemBuilds, getSkillOrders } from '@/lib/timeline';
 import { cn, getPatch } from '@/lib/utils';
-import { useState } from 'react';
 
 export type SelectorProps = {
   match: Riot.MatchV5.Match;
@@ -36,7 +36,9 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
                 },
               )}
               key={index}
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => {
+                setSelectedIndex(index);
+              }}
             >
               <ChampIcon champId={championId} size='lg' />
               <div>{summonerName}</div>

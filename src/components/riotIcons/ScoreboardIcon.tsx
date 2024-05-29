@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
+import KDA from '@/../public/svg/scoreboard-kda-icon.svg';
 import Arrow from '@/../public/svg/scoreboard-stat-switcher-arrow.svg';
 import CC from '@/../public/svg/scoreboard-stat-switcher-cc-score.svg';
-import Damage from '@/../public/svg/scoreboard-sword-icon.svg';
-import DamageTaken from '@/../public/svg/scoreboard-stat-switcher-shield.svg';
-import Minions from '@/../public/svg/scoreboard-stat-switcher-minions-slain.svg';
 import Vision from '@/../public/svg/scoreboard-stat-switcher-eye.svg';
-import KDA from '@/../public/svg/scoreboard-kda-icon.svg';
+import Minions from '@/../public/svg/scoreboard-stat-switcher-minions-slain.svg';
+import DamageTaken from '@/../public/svg/scoreboard-stat-switcher-shield.svg';
+import Damage from '@/../public/svg/scoreboard-sword-icon.svg';
 
 import { cn } from '@/lib/utils';
 
@@ -77,9 +77,5 @@ export const ScoreboardIcon = ({
     return <Minions className={className} />;
   }
 
-  if (type === 'eye') {
-    return <Vision className={className} />;
-  }
-
-  return <></>;
+  return <Vision className={className} />;
 };

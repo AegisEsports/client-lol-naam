@@ -1,18 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
-import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
-
-const GOLD = '/images/mask-icon-gold.png';
-const SWORD = '/svg/scoreboard-sword-icon.svg';
-const SHIELD = '/svg/scoreboard-stat-switcher-shield.svg';
-const CC_SCORE = '/svg/scoreboard-stat-switcher-cc-score.svg';
-const MINIONS = '/svg/scoreboard-stat-switcher-minions-slain.svg';
-const EYE = '/svg/scoreboard-stat-switcher-eye.svg';
-const ARROW = '/svg/scoreboard-stat-switcher-arrow.svg';
+import { cn } from '@/lib/utils';
 
 export type ControllerProps = {
   group: string;
@@ -39,27 +30,28 @@ export const Controller = ({
     moveRight: right2,
   } = useScoreboardControls(`${group}-gold`);
 
-  const iconSize = size === 'sm' ? 16 : size === 'md' ? 24 : 32;
   useEffect(() => {
     add1({
-      set: (string) =>
+      set: (string) => {
         setGroup1(
           string === 'damage'
             ? 'damage'
             : string === 'damageTaken'
               ? 'damageTaken'
               : 'cc',
-        ),
+        );
+      },
       values: ['damage', 'damageTaken', 'cc'],
     });
     add2({
-      set: (string) =>
+      set: (string) => {
         setGroup2(
           string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision',
-        ),
+        );
+      },
       values: ['gold', 'cs', 'vision'],
     });
-  }, []);
+  }, [add1, add2]);
 
   const buttonClassName =
     'cursor-pointer select-none text-gray-400 hover:text-white transition-all duration-300';

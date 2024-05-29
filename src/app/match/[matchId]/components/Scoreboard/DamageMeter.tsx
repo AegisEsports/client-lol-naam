@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 
 export type DamageMeterProps = {
   damage: number;
@@ -31,17 +31,18 @@ export const DamageMeter = ({
 
   useEffect(() => {
     add({
-      set: (string) =>
+      set: (string) => {
         setGroup(
           string === 'damage'
             ? 'damage'
             : string === 'damageTaken'
               ? 'damageTaken'
               : 'cc',
-        ),
+        );
+      },
       values: ['damage', 'damageTaken', 'cc'],
     });
-  }, []);
+  }, [add]);
 
   const stat =
     group === 'damage' ? damage : group === 'damageTaken' ? damageTaken : cc;

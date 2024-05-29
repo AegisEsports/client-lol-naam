@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 const CDRAGON_URL =
   'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/';
@@ -30,7 +30,7 @@ export const Rune = async ({
 
   let path = 'runesicon.png';
   let alt = `${type} rune`;
-  let description = undefined;
+  let description;
 
   if (tree !== undefined) {
     if (type === 'keystone') {
@@ -67,7 +67,7 @@ export const Rune = async ({
     />
   );
 
-  if (!description) return img;
+  if (description === undefined) return img;
 
   return (
     <Tooltip

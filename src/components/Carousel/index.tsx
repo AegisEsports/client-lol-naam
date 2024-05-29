@@ -1,15 +1,7 @@
 'use client';
 
+import { type ReactNode, useEffect, useRef } from 'react';
 import { useCarousel } from '@/components/Carousel/hooks';
-import { cn } from '@/lib/utils';
-import {
-  MutableRefObject,
-  ReactNode,
-  createRef,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
 
 export type CarouselProps = {
   items: ReactNode[];
@@ -23,7 +15,7 @@ export const Carousel = ({ items, group }: CarouselProps): JSX.Element => {
 
   useEffect(() => {
     add(refs.current);
-  }, []);
+  }, [add]);
 
   return (
     <div className='w-full h-full snap-x snap-mandatory inline-flex overflow-x-scroll pointer-events-none items-center scrollbar-hidden'>

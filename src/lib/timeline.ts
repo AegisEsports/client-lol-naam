@@ -31,12 +31,8 @@ const removeUndos = (
 
 export const getItemBuilds = (
   timeline: Riot.MatchV5.Timeline,
-): {
-  [puuid: string]: ItemBuild;
-} => {
-  const builds: {
-    [participantId: number]: ItemBuild;
-  } = Object.fromEntries(
+): Record<string, ItemBuild> => {
+  const builds: Record<number, ItemBuild> = Object.fromEntries(
     timeline.info.participants.map(({ participantId }) => [participantId, []]),
   );
 
@@ -64,7 +60,7 @@ export const getItemBuilds = (
 
     if (!buildThisMinute) {
       buildThisMinute = {
-        minute: minute,
+        minute,
         items: [],
       };
 
@@ -74,17 +70,19 @@ export const getItemBuilds = (
     if (t.type === 'ITEM_PURCHASED') {
       const item = buildThisMinute.items.find((i) => i.id === t.itemId);
 
-      if (item) item.quantity = item.quantity ? item.quantity + 1 : 1;
-      else
+      if (item) item.quantity = item.quantity + 1;
+      else {
         buildThisMinute.items.push({ id: t.itemId, sold: false, quantity: 1 });
+      }
     }
 
     if (t.type === 'ITEM_SOLD') {
       const item = buildThisMinute.items.find((i) => i.id === t.itemId);
 
-      if (item) item.quantity = item.quantity ? item.quantity + 1 : 1;
-      else
+      if (item) item.quantity = item.quantity + 1;
+      else {
         buildThisMinute.items.push({ id: t.itemId, sold: true, quantity: 1 });
+      }
     }
   });
 
@@ -105,12 +103,8 @@ export const getItemBuilds = (
 
 export const getSkillOrders = (
   timeline: Riot.MatchV5.Timeline,
-): {
-  [puuid: string]: number[];
-} => {
-  const skillOrders: {
-    [participantId: number]: number[];
-  } = Object.fromEntries(
+): Record<string, number[]> => {
+  const skillOrders: Record<number, number[]> = Object.fromEntries(
     timeline.info.participants.map(({ participantId }) => [participantId, []]),
   );
 

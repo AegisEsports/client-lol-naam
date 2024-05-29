@@ -1,12 +1,12 @@
 'use client';
 
+import useSWR from 'swr';
 import {
   GenericItem,
-  ItemProps,
+  type ItemProps,
   getCDragonItems,
   getDDragonItems,
 } from '@/components/riotIcons/Item';
-import useSWR from 'swr';
 
 export const ClientItem = ({
   item: itemId = 0,

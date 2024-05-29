@@ -2,7 +2,7 @@
 
 import {
   FloatingPortal,
-  Placement,
+  type Placement,
   autoUpdate,
   flip,
   offset,

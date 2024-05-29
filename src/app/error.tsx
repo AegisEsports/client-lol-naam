@@ -9,7 +9,7 @@ export default function Error({
 }: {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}): JSX.Element {
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.error(error);

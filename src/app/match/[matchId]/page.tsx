@@ -1,20 +1,20 @@
+import { format } from 'date-fns';
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
 import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
 import { getMatch } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
-import { format } from 'date-fns';
 
 export const EXAMPLE_MATCHES = ['4959299173'];
 
-export async function generateStaticParams() {
-  return EXAMPLE_MATCHES.map((matchId) => ({ matchId: matchId }));
+export function generateStaticParams(): { matchId: string }[] {
+  return EXAMPLE_MATCHES.map((matchId) => ({ matchId }));
 }
 
 export default async function Page({
   params,
 }: {
   params: { matchId: string };
-}) {
+}): Promise<JSX.Element> {
   const data = await getMatch(`NA1_${params.matchId}`);
 
   return (

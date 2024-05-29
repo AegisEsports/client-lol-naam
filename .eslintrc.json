@@ -1,33 +1,40 @@
 {
   "plugins": ["react-hooks"],
-  "extends": ["standard", "prettier"],
+  "extends": ["standard", "prettier", "plugin:@next/next/recommended"],
   "rules": {
-    "curly": ["warn", "multi-line"],
+    "curly": ["error", "multi-line"],
     "default-param-last": "error",
-    "no-constant-condition": "warn",
+    "no-constant-condition": "error",
     "no-empty-function": "error",
-    "no-param-reassign": "warn",
+    "no-param-reassign": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "after-used",
+        "ignoreRestSiblings": true
+      }
+    ],
     "no-use-before-define": ["error", "nofunc"],
-    "one-var": ["warn", "never"],
-    "prefer-const": "warn",
-    "prefer-template": "warn",
-    "prefer-object-spread": "warn",
+    "one-var": ["error", "never"],
+    "prefer-const": "error",
+    "prefer-template": "error",
+    "prefer-object-spread": "error",
     "sort-imports": [
-      "warn",
+      "error",
       {
         "ignoreDeclarationSort": true
       }
     ],
     "import/order": [
-      "warn",
+      "error",
       {
         "alphabetize": {
           "order": "asc"
         }
       }
     ],
-    "react-hooks/rules-of-hooks": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
   },
   "overrides": [
     {
@@ -49,36 +56,41 @@
         "project": ["./tsconfig.json", "./tsconfig.*.json"]
       },
       "rules": {
-        "@typescript-eslint/array-type": "warn",
+        "@typescript-eslint/array-type": "error",
         "@typescript-eslint/consistent-type-assertions": [
-          "warn",
+          "error",
           {
             "assertionStyle": "as",
             "objectLiteralTypeAssertions": "never"
           }
         ],
-        "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
-        "@typescript-eslint/consistent-type-exports": "warn",
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+        "@typescript-eslint/consistent-type-exports": "error",
         "@typescript-eslint/consistent-type-imports": [
-          "warn",
+          "error",
           {
             "fixStyle": "inline-type-imports"
           }
         ],
         "@typescript-eslint/explicit-function-return-type": [
-          "warn",
+          "error",
           {
             "allowExpressions": true
           }
         ],
         "@typescript-eslint/no-misused-promises": [
-          "warn",
+          "error",
           {
             "checksVoidReturn": false
           }
         ],
-        "@typescript-eslint/no-unnecessary-condition": "warn",
-        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-unnecessary-condition": "error",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "ignoreRestSiblings": true
+          }
+        ],
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
         "@typescript-eslint/prefer-nullish-coalescing": [
@@ -88,7 +100,21 @@
           }
         ],
         "@typescript-eslint/restrict-template-expressions": "off",
-        "prefer-const": "warn"
+        "@typescript-eslint/strict-boolean-expressions": [
+          "error",
+          {
+            "allowNumber": false,
+            "allowString": false,
+            "allowNullableBoolean": true
+          }
+        ],
+        "@typescript-eslint/require-array-sort-compare": [
+          "error",
+          {
+            "ignoreStringArrays": true
+          }
+        ],
+        "prefer-const": "error"
       }
     }
   ]

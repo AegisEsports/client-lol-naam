@@ -19,7 +19,7 @@ export type PlayerScoreboardProps = {
   patch?: string;
 };
 
-export const PlayerScoreboard = async ({
+export const PlayerScoreboard = ({
   participant,
   maxDamage,
   maxDamageTaken,
@@ -28,11 +28,11 @@ export const PlayerScoreboard = async ({
   icon = false,
   group,
   patch,
-}: PlayerScoreboardProps): Promise<JSX.Element> => {
+}: PlayerScoreboardProps): JSX.Element => {
   const {
     champLevel,
     championId,
-    puuid,
+    // puuid,
     teamPosition,
     kills,
     deaths,
@@ -164,7 +164,7 @@ export const PlayerScoreboard = async ({
             'text-white': kda !== 'Perfect' && kda < 3,
           })}
         >
-          {kda === 'Perfect' ? kda : `${kda.toFixed(2)}`}
+          {kda === 'Perfect' ? kda : kda.toFixed(2)}
         </span>
         <span className='text-gray-300'> KDA</span>
       </div>

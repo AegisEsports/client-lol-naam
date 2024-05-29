@@ -1,9 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 
 export type CSGoldVisionProps = {
   gold: number;
@@ -31,13 +31,14 @@ export const CSGoldVision = ({
 
   useEffect(() => {
     add({
-      set: (string) =>
+      set: (string) => {
         setGroup(
           string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision',
-        ),
+        );
+      },
       values: ['gold', 'cs', 'vision'],
     });
-  }, []);
+  }, [add]);
 
   return (
     <div

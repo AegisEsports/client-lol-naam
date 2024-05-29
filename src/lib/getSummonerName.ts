@@ -1,3 +1,3 @@
-export const getSummonerName = async (puuid: string) => {
-  return `p_${puuid.slice(0, 8)}`;
+export const getSummonerName = async (puuid: string): Promise<string> => {
+  return new Promise(() => `p_${puuid.slice(0, 8)}`);
 };

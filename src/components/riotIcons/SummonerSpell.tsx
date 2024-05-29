@@ -1,14 +1,15 @@
+import Image from 'next/image';
 import { Tooltip } from '@/components/Tooltip';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 // There's a file for this but whatever
-const SUMMONER_SPELLS: {
-  [key: number]: {
+const SUMMONER_SPELLS: Record<
+  number,
+  {
     img: string;
     name: string;
-  };
-} = {
+  }
+> = {
   21: {
     img: 'summonerbarrier.png',
     name: 'Barrier',
@@ -98,8 +99,9 @@ export const SummonerSpell = async ({
   spellId = 54,
   size = 'lg',
   className = '',
-}: SummonerSpellProps) => {
-  const spell = SUMMONER_SPELLS[spellId] ?? SUMMONER_SPELLS[54];
+}: SummonerSpellProps): Promise<JSX.Element> => {
+  const spell =
+    spellId in SUMMONER_SPELLS ? SUMMONER_SPELLS[spellId] : SUMMONER_SPELLS[54];
   const imgSize = size === 'lg' ? 26 : size === 'md' ? 20 : 13;
 
   const spells = (await fetch(SPELLS_JSON).then((res) =>

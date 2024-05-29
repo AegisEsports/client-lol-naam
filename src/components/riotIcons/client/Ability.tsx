@@ -1,10 +1,10 @@
 'use client';
 
+import Image from 'next/image';
+import useSWR from 'swr';
 import { Tooltip } from '@/components/Tooltip';
 import { PlaceholderIcon } from '@/components/riotIcons/PlaceholderIcon';
 import { cn, getChampionDetails, getSpellUrl } from '@/lib/utils';
-import Image from 'next/image';
-import useSWR from 'swr';
 
 export type AbilityProps = {
   championId: number;

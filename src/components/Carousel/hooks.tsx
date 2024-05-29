@@ -3,7 +3,7 @@ type Carousel = {
   currentIndex: number;
 };
 
-const carousels: { [key: string]: Carousel[] } = {};
+const carousels = new Map<string, Carousel[]>();
 
 export const useCarousel = (
   key = 'default',
@@ -12,15 +12,17 @@ export const useCarousel = (
   scrollRight: () => void;
   scrollLeft: () => void;
 } => {
-  const add = (refs: (HTMLDivElement | null)[]) => {
-    if (!carousels[key]) {
-      carousels[key] = [];
+  const add = (refs: (HTMLDivElement | null)[]): void => {
+    const carousel = carousels.get(key) ?? [];
+
+    if (carousel.length === 0) {
+      carousels.set(key, carousel);
     }
 
-    carousels[key].push({ refs, currentIndex: 0 });
+    carousel.push({ refs, currentIndex: 0 });
   };
 
-  const scrollToIndex = (carousel: Carousel, index: number) => {
+  const scrollToIndex = (carousel: Carousel, index: number): void => {
     carousel.currentIndex = index;
 
     carousel.refs[index]?.scrollIntoView({
@@ -30,16 +32,16 @@ export const useCarousel = (
     });
   };
 
-  const scrollRight = () => {
-    carousels[key].forEach((c) => {
+  const scrollRight = (): void => {
+    carousels.get(key)?.forEach((c) => {
       const nextIndex = (c.currentIndex + 1) % c.refs.length;
 
       scrollToIndex(c, nextIndex);
     });
   };
 
-  const scrollLeft = () => {
-    carousels[key].forEach((c) => {
+  const scrollLeft = (): void => {
+    carousels.get(key)?.forEach((c) => {
       const nextIndex = (c.currentIndex - 1) % c.refs.length;
 
       scrollToIndex(c, nextIndex);

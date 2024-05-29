@@ -1,5 +1,5 @@
-import { H1 } from '@/components/H1';
 import Link from 'next/link';
+import { H1 } from '@/components/H1';
 
 export const NavBar = (): JSX.Element => (
   <div className='p-4 w-full items-center flex h-16 border-b border-gray-800'>

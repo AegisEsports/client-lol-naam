@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 // base 360x360
 const BASE_URL =

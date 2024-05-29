@@ -1,7 +1,7 @@
 'use client';
 
 import { ClientItem } from '@/components/riotIcons/client/ClientItem';
-import { ItemBuild } from '@/lib/timeline';
+import { type ItemBuild } from '@/lib/timeline';
 
 export type BuildPathProps = {
   build: ItemBuild;

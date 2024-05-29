@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { EXAMPLE_MATCHES } from '@/app/match/[matchId]/page';
 import { H1 } from '@/components/H1';
-import Link from 'next/link';
 
 export default function HomePage(): JSX.Element {
   return (

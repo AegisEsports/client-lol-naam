@@ -9,8 +9,20 @@ const scoreboardSettings = new Map<
   }[]
 >();
 
-export const useScoreboardControls = (name?: string) => {
-  const key = name || 'default';
+export const useScoreboardControls = (
+  name?: string,
+): {
+  add: ({
+    set,
+    values,
+  }: {
+    set: (string: string) => void;
+    values: string[];
+  }) => void;
+  moveLeft: () => void;
+  moveRight: () => void;
+} => {
+  const key = name ?? 'default';
 
   const add = ({
     set,
@@ -20,19 +32,19 @@ export const useScoreboardControls = (name?: string) => {
     values: string[];
   }): void => {
     scoreboardSettings.set(key, [
-      ...(scoreboardSettings?.get(key) ?? []),
+      ...(scoreboardSettings.get(key) ?? []),
       { set, values, index: 0 },
     ]);
   };
 
-  const moveLeft = () => {
+  const moveLeft = (): void => {
     scoreboardSettings.get(key)?.forEach((obj) => {
       obj.index = obj.index - 1 < 0 ? obj.values.length - 1 : obj.index - 1;
       obj.set(obj.values[obj.index]);
     });
   };
 
-  const moveRight = () => {
+  const moveRight = (): void => {
     scoreboardSettings.get(key)?.forEach((obj) => {
       obj.index = (obj.index + 1) % obj.values.length;
       obj.set(obj.values[obj.index]);

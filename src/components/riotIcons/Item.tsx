@@ -1,17 +1,17 @@
+import Image from 'next/image';
 import { Tooltip } from '@/components/Tooltip';
 import {
   PlaceholderIcon,
   getIconClass,
 } from '@/components/riotIcons/PlaceholderIcon';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
-export const getDDragonItems = (patch?: string) =>
+export const getDDragonItems = (patch?: string): string =>
   `https://ddragon.leagueoflegends.com/cdn/${patch ?? process.env.LIVE_PATCH ?? '14.3'}.1/data/en_US/item.json`;
-export const getCDragonItems = (patch?: string) =>
+export const getCDragonItems = (patch?: string): string =>
   `https://raw.communitydragon.org/${patch ?? 'latest'}/plugins/rcp-be-lol-game-data/global/default/v1/items.json`;
 
-const getCDragonItemsDir = (patch?: string) =>
+const getCDragonItemsDir = (patch?: string): string =>
   `https://raw.communitydragon.org/${patch ?? 'latest'}/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/`;
 
 export type GenericItemProps = {
@@ -31,7 +31,7 @@ export const GenericItem = ({
   tooltipLookup,
   patch,
 }: GenericItemProps): JSX.Element => {
-  let item = itemLookup?.find((item) => item.id === itemId);
+  const item = itemLookup?.find((item) => item.id === itemId);
 
   const itemDetails = tooltipLookup?.data[itemId.toString()];
 
@@ -45,7 +45,7 @@ export const GenericItem = ({
 
   const sizePx = size === 'sm' ? 24 : size === 'md' ? 32 : 48;
 
-  const name = itemDetails ? itemDetails?.name : item.name;
+  const name = itemDetails ? itemDetails.name : item.name;
 
   const description = (itemDetails ? itemDetails.description : item.description)
     .replaceAll(/<br>(<br>)+/g, '<br><br>')

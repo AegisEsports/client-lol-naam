@@ -7,13 +7,11 @@ export type SkillOrderProps = {
   patch: string;
 };
 
-const KEYS = ['', 'Q', 'W', 'E', 'R'];
-
 export const SkillOrder = ({
   skillOrder,
   championId,
   patch,
-}: SkillOrderProps) => {
+}: SkillOrderProps): JSX.Element => {
   return (
     <div className='flex flex-col gap-1'>
       {[1, 2, 3, 4].map((skill) => {

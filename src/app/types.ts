@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace Riot {
   export namespace MatchV5 {
     export type Match = {
@@ -458,8 +460,9 @@ namespace Riot {
     export type ItemLookup = {
       type: string;
       version: string;
-      data: {
-        [key: string]: {
+      data: Record<
+        string,
+        {
           id: number;
           name: string;
           description: string;
@@ -482,8 +485,8 @@ namespace Riot {
             w: number;
             h: number;
           };
-        };
-      };
+        }
+      >;
     };
 
     export type RuneLookup = {
@@ -506,8 +509,9 @@ namespace Riot {
     export type SummonerLookup = {
       type: string;
       version: string;
-      data: {
-        [key: string]: {
+      data: Record<
+        string,
+        {
           id: string;
           name: string;
           description: string;
@@ -517,7 +521,7 @@ namespace Riot {
           cooldownBurn: string;
           cost: number[];
           costBurn: string;
-          datavalues: {};
+          datavalues: Record<string, never>;
           effect: (number[] | null)[];
           effectBurn: (string | null)[];
           vars: {
@@ -542,8 +546,8 @@ namespace Riot {
             h: number;
           };
           resource: string;
-        };
-      };
+        }
+      >;
     };
 
     export type ChampionShort = {
@@ -598,9 +602,7 @@ namespace Riot {
       type: string;
       format: string;
       version: string;
-      data: {
-        [id: string]: ChampionShort;
-      };
+      data: Record<string, ChampionShort>;
     };
 
     export type Champion = {
@@ -671,7 +673,7 @@ namespace Riot {
         cooldownBurn: string;
         cost: number[];
         costBurn: string;
-        datavalues: {};
+        datavalues: Record<string, never>;
         effect: (number[] | null)[];
         effectBurn: (string | null)[];
         vars: {
@@ -713,9 +715,7 @@ namespace Riot {
       type: string;
       format: string;
       version: string;
-      data: {
-        [id: string]: Champion;
-      };
+      data: Record<string, Champion>;
     };
   }
 }

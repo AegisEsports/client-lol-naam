@@ -1,5 +1,5 @@
+import { type ReactNode } from 'react';
 import { MenuButton } from '@/components/MenuButton';
-import { ReactNode } from 'react';
 
 export type WrapperProps = {
   page: 'scoreboard' | 'builds';

@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 const ROLE_PATH =
   'https://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-static-assets/global/default/svg/';

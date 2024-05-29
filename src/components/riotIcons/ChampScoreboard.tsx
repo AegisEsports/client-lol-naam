@@ -12,8 +12,8 @@
 // );
 // position: absolute;
 // width: 247px;
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 const RIOT_MASK = `linear-gradient(
   90deg, 
@@ -54,9 +54,9 @@ export const ChampScoreboard = ({
       style={{
         maskImage: RIOT_MASK,
         WebkitMaskImage: RIOT_MASK,
-        maskPosition: size == 'lg' ? '25px' : size == 'md' ? '20px' : '15px',
+        maskPosition: size === 'lg' ? '25px' : size === 'md' ? '20px' : '15px',
         WebkitMaskPositionX:
-          size == 'lg' ? '25px' : size == 'md' ? '20px' : '15px',
+          size === 'lg' ? '25px' : size === 'md' ? '20px' : '15px',
       }}
     />
     <div
