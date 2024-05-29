@@ -245,7 +245,8 @@ export const PlayerScoreboard = ({
         <>
           <ChampScoreboard
             level={champLevel}
-            champId={championId}
+            patch={patch}
+            championId={championId}
             size={size}
           />
           {summonerNameComponent}

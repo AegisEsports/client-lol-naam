@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import useSWR from 'swr';
 import { Tooltip } from '@/components/Tooltip';
 import { PlaceholderIcon } from '@/components/riotIcons/PlaceholderIcon';
-import { cn, getChampionDetails, getSpellUrl } from '@/lib/utils';
+import { useChampionDetails } from '@/lib/hooks';
+import { cn, getSpellUrl } from '@/lib/utils';
 
 export type AbilityProps = {
   championId: number;
@@ -19,9 +19,7 @@ export const Ability = ({
   patch,
   size = 'md',
 }: AbilityProps): JSX.Element => {
-  const { data: champion } = useSWR(`championDetails-${championId}`, () =>
-    getChampionDetails(championId, patch),
-  );
+  const { data: champion } = useChampionDetails(championId, patch);
 
   if (!champion) {
     return <PlaceholderIcon size={size} />;

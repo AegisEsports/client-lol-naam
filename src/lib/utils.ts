@@ -51,12 +51,13 @@ export const getChampion = async (
 /** Get the full champion details from ID. */
 export const getChampionDetails = async (
   championId: number,
-  patch: string,
+  patch?: string,
 ): Promise<Riot.DDragon.Champion> => {
-  const champion = await getChampion(championId, patch);
+  const fallbackPatch = patch ?? process.env.LIVE_PATCH ?? '14.4';
+  const champion = await getChampion(championId, fallbackPatch);
 
   return fetch(
-    `https://ddragon.leagueoflegends.com/cdn/${patch}.1/data/en_US/champion/${champion.id}.json`,
+    `https://ddragon.leagueoflegends.com/cdn/${fallbackPatch}.1/data/en_US/champion/${champion.id}.json`,
   )
     .then((res) => res.json())
     .then(
