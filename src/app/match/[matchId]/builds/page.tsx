@@ -7,10 +7,7 @@ export default async function Builds({
 }: {
   params: { matchId: string };
 }) {
-  const match = (await fetch(
-    `https://api.brycenaddison.com/m/NA1_${params.matchId}`,
-  ).then((res) => res.json())) as Riot.MatchV5.Match;
-  // const match = await getMatch(`NA1_${params.matchId}`);
+  const match = await getMatch(`NA1_${params.matchId}`);
   const timeline = await getTimeline(`NA1_${params.matchId}`);
 
   return (

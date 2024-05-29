@@ -1,10 +1,13 @@
 import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
 import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
+import { getMatch } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 import { format } from 'date-fns';
 
+export const EXAMPLE_MATCHES = ['4959299173'];
+
 export async function generateStaticParams() {
-  return ['4421881781', '4456011940'].map((matchId) => ({ matchId: matchId }));
+  return EXAMPLE_MATCHES.map((matchId) => ({ matchId: matchId }));
 }
 
 export default async function Page({
@@ -12,16 +15,7 @@ export default async function Page({
 }: {
   params: { matchId: string };
 }) {
-  const data = (await fetch(
-    `https://api.brycenaddison.com/m/NA1_${params.matchId}`,
-  ).then((res) => res.json())) as Riot.MatchV5.Match;
-
-  // const timeline = await getTimeline(`NA1_${params.matchId}`);
-  // const matches = await getRecentMatches(
-  //   'kd81ZIu_tnO43jggrYeyX328OtZUUihQis4Syb7Jeefzwq_p28Fg2Zr2KNtIYwPlodA9CLmWK7UMxg',
-  // );
-
-  // console.log(matches);
+  const data = await getMatch(`NA1_${params.matchId}`);
 
   return (
     <Wrapper page='scoreboard' matchId={params.matchId}>

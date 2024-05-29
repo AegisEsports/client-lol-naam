@@ -11,14 +11,10 @@ const handleResponse = async (response: Response) => {
 
 export const getTimeline = async (
   matchId: string,
-): Promise<Riot.MatchV5.Timeline> => {
-  console.log(
-    `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}/timeline?api_key=${process.env.RIOT_TOKEN}`,
-  );
+): Promise<Riot.MatchV5.Timeline> =>
   fetch(
     `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}/timeline?api_key=${process.env.RIOT_TOKEN}`,
   ).then(handleResponse);
-};
 
 export const getMatch = async (matchId: string): Promise<Riot.MatchV5.Match> =>
   fetch(
