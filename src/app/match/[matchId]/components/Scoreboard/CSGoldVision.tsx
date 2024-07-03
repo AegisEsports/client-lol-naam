@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
-import { Tooltip } from '@/components/Tooltip';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
 
 export type CSGoldVisionProps = {
@@ -27,26 +27,24 @@ export const CSGoldVision = ({
   group: key,
 }: CSGoldVisionProps): JSX.Element => {
   const [group, setGroup] = useState<'gold' | 'cs' | 'vision'>('gold');
-  const { add } = useScoreboardControls(key);
-
-  useEffect(() => {
-    add({
-      set: (string) => {
-        setGroup(
-          string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision',
-        );
-      },
-      values: ['gold', 'cs', 'vision'],
-    });
-  }, [add]);
+  useScoreboardControls(
+    ['gold', 'cs', 'vision'],
+    (string) => {
+      setGroup(string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision');
+    },
+    key,
+  );
 
   return (
     <div
-      className={cn('flex flex-col text-gray-400 items-center shrink-0', {
-        'text-lg w-32': size === 'lg',
-        'text-sm w-24': size === 'md',
-        'text-[.6rem] w-16 ': size === 'sm',
-      })}
+      className={cn(
+        'flex flex-col dark:text-gray-400 text-gray-500 items-center shrink-0',
+        {
+          'text-lg w-32': size === 'lg',
+          'text-sm w-24': size === 'md',
+          'text-[.6rem] w-16 ': size === 'sm',
+        },
+      )}
     >
       {group === 'vision' ? (
         <Tooltip
@@ -69,22 +67,26 @@ export const CSGoldVision = ({
         >
           <div className='flex flex-col items-center'>
             <div>
-              <span className='text-gray-200 font-semibold'>
+              <span className='dark:text-gray-200 text-gray-800 font-semibold'>
                 {controlWards}
               </span>{' '}
               CW
             </div>
             <div>
-              <span className='text-gray-200 font-semibold'>{wardsPlaced}</span>{' '}
+              <span className='dark:text-gray-200 text-gray-800 font-semibold'>
+                {wardsPlaced}
+              </span>{' '}
               P /{' '}
-              <span className='text-gray-200 font-semibold'>{wardsKilled}</span>{' '}
+              <span className='dark:text-gray-200 text-gray-800 font-semibold'>
+                {wardsKilled}
+              </span>{' '}
               K
             </div>
           </div>
         </Tooltip>
       ) : (
         <>
-          <div className='font-semibold text-gray-200'>
+          <div className='font-semibold dark:text-gray-200 text-gray-800'>
             {(group === 'gold' ? gold : cs).toLocaleString()}
           </div>
           <div>

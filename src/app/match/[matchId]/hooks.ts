@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 const scoreboardSettings = new Map<
   string,
   {
@@ -10,32 +12,28 @@ const scoreboardSettings = new Map<
 >();
 
 export const useScoreboardControls = (
+  values: string[],
+  set: (string: string) => void,
   name?: string,
 ): {
-  add: ({
-    set,
-    values,
-  }: {
-    set: (string: string) => void;
-    values: string[];
-  }) => void;
   moveLeft: () => void;
   moveRight: () => void;
 } => {
   const key = name ?? 'default';
 
-  const add = ({
-    set,
-    values,
-  }: {
-    set: (string: string) => void;
-    values: string[];
-  }): void => {
+  useEffect(() => {
     scoreboardSettings.set(key, [
       ...(scoreboardSettings.get(key) ?? []),
       { set, values, index: 0 },
     ]);
-  };
+
+    return () => {
+      scoreboardSettings.set(
+        key,
+        scoreboardSettings.get(key)?.filter((obj) => obj.set !== set) ?? [],
+      );
+    };
+  }, []);
 
   const moveLeft = (): void => {
     scoreboardSettings.get(key)?.forEach((obj) => {
@@ -52,7 +50,6 @@ export const useScoreboardControls = (
   };
 
   return {
-    add,
     moveLeft,
     moveRight,
   };

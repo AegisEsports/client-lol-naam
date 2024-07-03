@@ -30,9 +30,9 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
           return (
             <div
               className={cn(
-                'flex flex-col items-center gap-2 w-36 hover:bg-white/20 rounded-lg p-2 transition-all duration-300 shrink-0',
+                'flex flex-col items-center gap-2 w-36 hover:bg-foreground/10 rounded-lg p-2 transition-all duration-300 shrink-0',
                 {
-                  'bg-white/10': selectedIndex === index,
+                  'bg-foreground/5': selectedIndex === index,
                 },
               )}
               key={index}
@@ -48,13 +48,13 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
       </div>
       <div className='text-center max-w-6xl font-semibold text-xl'>
         Items
-        <div className='border rounded-lg border-gray-800 p-2 mt-1'>
+        <div className='border rounded-lg border-border p-2 mt-1'>
           <BuildPath patch={patch} build={builds[selected]} />
         </div>
       </div>
       <div className='text-center max-w-6xl font-semibold text-xl'>
         Skill Order
-        <div className='border rounded-lg border-gray-800 p-2 mt-1'>
+        <div className='border rounded-lg border-border p-2 mt-1'>
           <SkillOrder
             skillOrder={skillOrders[selected]}
             championId={participant.championId}

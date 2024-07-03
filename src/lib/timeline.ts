@@ -1,12 +1,27 @@
+import { groupBy } from 'lodash-es';
+
+/** Represents one shop visit. */
 export type ItemBuild = {
+  /** The time of the shop visit. */
   minute: number;
+  /** The transactions in the visit. */
   items: {
+    /** The item id. */
     id: number;
+    /** Whether the item was sold or not. */
     sold: boolean;
+    /** How many of the item were purchased or sold. */
     quantity: number;
   }[];
 }[];
 
+/**
+ * Removes ITEM_UNDO events from a list of events, along with the corresponding
+ * ITEM_PURCHASED and ITEM_SOLD events.
+ *
+ * @param events The list of timeline events
+ * @returns An updated list of timeline events with events removed
+ */
 const removeUndos = (
   events: Riot.MatchV5.TimelineEvent[],
 ): Riot.MatchV5.TimelineEvent[] => {
@@ -29,6 +44,13 @@ const removeUndos = (
   return transactions;
 };
 
+/**
+ * Returns the complete list of shop transactions for each player in a game.
+ *
+ * @param timeline A match timeline
+ * @returns A record of each player in the match's puuid, mapped to their item
+ * build.
+ */
 export const getItemBuilds = (
   timeline: Riot.MatchV5.Timeline,
 ): Record<string, ItemBuild> => {
@@ -101,6 +123,13 @@ export const getItemBuilds = (
   );
 };
 
+/**
+ * Returns the skill max order for each player in a game.
+ *
+ * @param timeline A match timeline
+ * @returns A record of each player in the match's puuid, mapped to an array of
+ * skill slots corresponding to the skill max order.
+ */
 export const getSkillOrders = (
   timeline: Riot.MatchV5.Timeline,
 ): Record<string, number[]> => {
@@ -134,4 +163,74 @@ export const getSkillOrders = (
       skills,
     ]),
   );
+};
+
+const aggregateGoldValues = (timestamps: GoldTimestamp[]): GoldTimestamp[] =>
+  Object.entries(groupBy(timestamps, 'timestamp')).map(([, goldValues]) => {
+    const gold = goldValues.reduce((acc, { gold }) => acc + gold, 0);
+    return { timestamp: goldValues[0].timestamp, gold };
+  });
+
+/** The total gold at a certain timestamp. */
+export type GoldTimestamp = { timestamp: number; gold: number };
+
+/**
+ * Aggregates gold data for each timestamp for each player and team.
+ */
+export const getGoldInfo = (
+  match: Riot.MatchV5.Match,
+  timeline: Riot.MatchV5.Timeline,
+): {
+  /** Each player's total gold at each timestamp. */
+  participants: Record<number, GoldTimestamp[]>;
+  /** Blue team's total gold at each timestamp. */
+  blue: GoldTimestamp[];
+  /** Red team's total gold at each timestamp. */
+  red: GoldTimestamp[];
+  /** How ahead blue team is at each timestamp. */
+  difference: GoldTimestamp[];
+} => {
+  const participantGold: Record<number, GoldTimestamp[]> = Object.fromEntries(
+    timeline.info.participants.map(({ participantId }) => [participantId, []]),
+  );
+
+  // TODO: Create player util to get team, profile, etc.
+  const whichTeam = Object.fromEntries(
+    match.info.participants.map(({ participantId, teamId }) => [
+      participantId,
+      teamId,
+    ]),
+  );
+
+  const blueGold: GoldTimestamp[] = [];
+  const redGold: GoldTimestamp[] = [];
+
+  timeline.info.frames.forEach(({ timestamp, participantFrames }) => {
+    Object.entries(participantFrames).forEach(
+      ([participantId, { totalGold: gold }]) => {
+        participantGold[parseInt(participantId)].push({
+          timestamp,
+          gold,
+        });
+
+        if (whichTeam[parseInt(participantId)] === 100) {
+          blueGold.push({ timestamp, gold });
+        } else {
+          redGold.push({ timestamp, gold });
+        }
+      },
+    );
+  });
+
+  const difference = aggregateGoldValues([
+    ...blueGold,
+    ...redGold.map(({ timestamp, gold }) => ({ timestamp, gold: -gold })),
+  ]);
+
+  return {
+    participants: participantGold,
+    blue: aggregateGoldValues(blueGold),
+    red: aggregateGoldValues(redGold),
+    difference,
+  };
 };

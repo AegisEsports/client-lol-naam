@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
-import { MenuButton } from '@/components/MenuButton';
+import { MenuButton } from '@/components/ui/MenuButton';
 
 export type WrapperProps = {
-  page: 'scoreboard' | 'builds';
+  page: 'scoreboard' | 'builds' | 'overview';
   matchId: string;
   children: ReactNode;
 };
@@ -26,6 +26,12 @@ export const Wrapper = ({
           selected={page === 'builds'}
         >
           Builds
+        </MenuButton>
+        <MenuButton
+          href={`/match/${matchId}/overview`}
+          selected={page === 'overview'}
+        >
+          Overview
         </MenuButton>
       </div>
       {children}

@@ -211,10 +211,8 @@ namespace Riot {
 
     export type Frame = {
       events: TimelineEvent[];
-      participantFrames: {
-        [participantId: number]: ParticipantFrame;
-        timestamp: number;
-      };
+      participantFrames: Record<number, ParticipantFrame>;
+      timestamp: number;
     };
 
     export type Position = {

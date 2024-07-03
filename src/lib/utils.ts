@@ -75,3 +75,38 @@ export const getSpellUrl = (
   const spell = champion.spells[slot - 1];
   return `https://ddragon.leagueoflegends.com/cdn/${patch}.1/img/spell/${spell.image.full}`;
 };
+
+/** A list of popular operating systems. */
+export type OS = 'Mac OS' | 'iOS' | 'Windows' | 'Android' | 'Linux' | undefined;
+
+/** Get the current operating system of the user. */
+export const getOS = (): OS => {
+  if (typeof window === 'undefined') return undefined;
+
+  const userAgent = window.navigator.userAgent ?? '';
+
+  let os: OS;
+
+  if (/Mac/.test(userAgent)) {
+    os = 'Mac OS';
+  } else if (/iPhone|iPad|iPod/.test(userAgent)) {
+    os = 'iOS';
+  } else if (/Win/.test(userAgent)) {
+    os = 'Windows';
+  } else if (/Android/.test(userAgent)) {
+    os = 'Android';
+  } else if (/Linux/.test(userAgent)) {
+    os = 'Linux';
+  }
+
+  return os;
+};
+
+/** Get the command key of the operating system. */
+export const getCommandKey = (): string => {
+  const os = getOS();
+  if (os === 'Mac OS' || os === 'iOS') {
+    return '⌘';
+  }
+  return 'Ctrl';
+};

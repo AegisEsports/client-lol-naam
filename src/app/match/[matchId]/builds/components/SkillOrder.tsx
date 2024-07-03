@@ -29,8 +29,8 @@ export const SkillOrder = ({
             {skillOrder.map((order, index) => {
               return (
                 <div
-                  className={cn('h-8 w-8 rounded-lg border border-gray-800', {
-                    'bg-gray-800': order === skill,
+                  className={cn('h-8 w-8 rounded-lg border border-border', {
+                    'bg-border': order === skill,
                   })}
                 >
                   {order === skill ? index + 1 : ''}

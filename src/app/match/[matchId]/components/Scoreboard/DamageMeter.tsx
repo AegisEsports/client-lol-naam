@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { cn } from '@/lib/utils';
+import { Star } from 'lucide-react';
 
 export type DamageMeterProps = {
   damage: number;
@@ -27,22 +28,18 @@ export const DamageMeter = ({
   group: key,
 }: DamageMeterProps): JSX.Element => {
   const [group, setGroup] = useState<'damage' | 'damageTaken' | 'cc'>('damage');
-  const { add } = useScoreboardControls(key);
-
-  useEffect(() => {
-    add({
-      set: (string) => {
-        setGroup(
-          string === 'damage'
-            ? 'damage'
-            : string === 'damageTaken'
-              ? 'damageTaken'
-              : 'cc',
-        );
-      },
-      values: ['damage', 'damageTaken', 'cc'],
-    });
-  }, [add]);
+  useScoreboardControls(
+    ['damage', 'damageTaken', 'cc'],
+    (string) =>
+      setGroup(
+        string === 'damage'
+          ? 'damage'
+          : string === 'damageTaken'
+            ? 'damageTaken'
+            : 'cc',
+      ),
+    key,
+  );
 
   const stat =
     group === 'damage' ? damage : group === 'damageTaken' ? damageTaken : cc;
@@ -65,13 +62,16 @@ export const DamageMeter = ({
       )}
     >
       <div
-        className={cn({
+        className={cn('items-center gap-1 flex', {
           'text-[.6rem]': size === 'sm',
           'text-sm': size === 'md',
           'text-xl': size === 'lg',
           'font-semibold text-glow shadow-white': stat === maxStat,
         })}
       >
+        {stat === maxStat && (
+          <Star className='h-4 w-4' fill='gold' strokeWidth={0} />
+        )}
         {stat.toLocaleString()}
       </div>
       <div
@@ -81,9 +81,9 @@ export const DamageMeter = ({
             'w-12 h-1': size === 'sm',
             'w-16 h-1.5': size === 'md',
             'w-24 h-2': size === 'lg',
-            'bg-blue-900': group === 'damage',
-            'bg-green-900': group === 'damageTaken',
-            'bg-purple-900': group === 'cc',
+            'dark:bg-blue-900 bg-blue-100': group === 'damage',
+            'dark:bg-green-900 bg-green-100': group === 'damageTaken',
+            'dark:bg-purple-900 bg-purple-100': group === 'cc',
           },
         )}
       >

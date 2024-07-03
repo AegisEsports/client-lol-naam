@@ -4,10 +4,10 @@ import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
 import { getMatch } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 
-export const EXAMPLE_MATCHES = ['4959299173'];
+export const exampleMatches = ['4959299173'];
 
 export function generateStaticParams(): { matchId: string }[] {
-  return EXAMPLE_MATCHES.map((matchId) => ({ matchId }));
+  return exampleMatches.map((matchId) => ({ matchId }));
 }
 
 export default async function Page({

@@ -37,12 +37,12 @@ export const TeamHeader = ({
     >
       <div className='font-bold'>{win ? 'Victory' : 'Defeat'}</div>
       <div className='font-normal text-gray-500'>({teamName})</div>
-      <div className='text-gray-600'>·</div>
+      <div className='dark:text-gray-600 text-gray-400'>·</div>
       <ScoreboardIcon type='kda' size={size} />
       <div>
         {kills} / {deaths} / {assists}
       </div>
-      <div className='text-gray-600'>·</div>
+      <div className='dark:text-gray-600 text-gray-400'>·</div>
       <ScoreboardIcon type='gold' size={size} />
       <div>{gold.toLocaleString()}</div>
       <div

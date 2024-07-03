@@ -134,14 +134,11 @@ export const PlayerScoreboard = ({
 
   const kdaComponent = (
     <div
-      className={cn(
-        'flex flex-col text-gray-200 items-center whitespace-nowrap shrink-0',
-        {
-          'text-xl w-32': size === 'lg',
-          'text-sm w-24': size === 'md',
-          'text-[.6rem] w-16': size === 'sm',
-        },
-      )}
+      className={cn('flex flex-col items-center whitespace-nowrap shrink-0', {
+        'text-xl w-32': size === 'lg',
+        'text-sm w-24': size === 'md',
+        'text-[.6rem] w-16': size === 'sm',
+      })}
     >
       <div
         className={cn('flex mt-auto font-semibold', {
@@ -161,7 +158,7 @@ export const PlayerScoreboard = ({
           className={cn('font-semibold', {
             'text-orange-400': kda === 'Perfect' || kda >= 5,
             'text-blue-400': kda !== 'Perfect' && kda >= 3 && kda < 5,
-            'text-white': kda !== 'Perfect' && kda < 3,
+            'dark:text-gray-600 text-gray-400': kda !== 'Perfect' && kda < 3,
           })}
         >
           {kda === 'Perfect' ? kda : kda.toFixed(2)}
