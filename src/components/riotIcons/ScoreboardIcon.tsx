@@ -9,7 +9,6 @@ import DamageTaken from '@/../public/svg/scoreboard-stat-switcher-shield.svg';
 import Damage from '@/../public/svg/scoreboard-sword-icon.svg';
 
 import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
 
 export type ScoreboardIconProps = {
   size?: 'sm' | 'md' | 'lg';

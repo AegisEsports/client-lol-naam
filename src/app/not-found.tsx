@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/Button';
 import { type Metadata } from 'next';
 import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
   title: 'Not Found',

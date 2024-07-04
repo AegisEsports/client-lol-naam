@@ -2,10 +2,10 @@
 
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/Select';
 
 export type ViewOption = (typeof viewOptions)[number];

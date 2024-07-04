@@ -16,7 +16,7 @@ export const SkillOrder = ({
     <div className='flex flex-col gap-1'>
       {[1, 2, 3, 4].map((skill) => {
         return (
-          <div className='flex gap-0.5'>
+          <div key={skill} className='flex gap-0.5'>
             <Ability
               size='sm'
               championId={championId}
@@ -29,6 +29,7 @@ export const SkillOrder = ({
             {skillOrder.map((order, index) => {
               return (
                 <div
+                  key={index}
                   className={cn('h-8 w-8 rounded-lg border border-border', {
                     'bg-border': order === skill,
                   })}

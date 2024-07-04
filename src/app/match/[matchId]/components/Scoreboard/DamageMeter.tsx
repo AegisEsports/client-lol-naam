@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Star } from 'lucide-react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { cn } from '@/lib/utils';
-import { Star } from 'lucide-react';
 
 export type DamageMeterProps = {
   damage: number;
@@ -27,17 +26,8 @@ export const DamageMeter = ({
   maxCC,
   group: key,
 }: DamageMeterProps): JSX.Element => {
-  const [group, setGroup] = useState<'damage' | 'damageTaken' | 'cc'>('damage');
-  useScoreboardControls(
+  const { value: group } = useScoreboardControls(
     ['damage', 'damageTaken', 'cc'],
-    (string) =>
-      setGroup(
-        string === 'damage'
-          ? 'damage'
-          : string === 'damageTaken'
-            ? 'damageTaken'
-            : 'cc',
-      ),
     key,
   );
 
@@ -66,11 +56,19 @@ export const DamageMeter = ({
           'text-[.6rem]': size === 'sm',
           'text-sm': size === 'md',
           'text-xl': size === 'lg',
-          'font-semibold text-glow shadow-white': stat === maxStat,
+          'font-semibold dark:text-glow shadow-white': stat === maxStat,
         })}
       >
         {stat === maxStat && (
-          <Star className='h-4 w-4' fill='gold' strokeWidth={0} />
+          <Star
+            className={cn({
+              'h-4 w-4': size === 'lg',
+              'h-3 w-3': size === 'md',
+              'h-2 w-2': size === 'sm',
+            })}
+            fill='gold'
+            strokeWidth={0}
+          />
         )}
         {stat.toLocaleString()}
       </div>

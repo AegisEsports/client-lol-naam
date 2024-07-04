@@ -1,8 +1,8 @@
 import './globals.css';
+import { Inter as FontSans } from 'next/font/google';
 import { type ReactNode } from 'react';
 import { Providers } from '@/app/providers';
 import { NavBar } from '@/components/NavBar';
-import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 
 const fontSans = FontSans({

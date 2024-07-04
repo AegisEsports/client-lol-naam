@@ -1,12 +1,10 @@
 'use client';
 
-import * as React from 'react';
+import { FileIcon, Laptop, Moon, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Moon, Sun, Laptop, CircleIcon, FileIcon } from 'lucide-react';
 
 import { useTheme } from 'next-themes';
-import { cn, getCommandKey } from '@/lib/utils';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import {
   CommandDialog,
@@ -17,15 +15,16 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/Command';
-import { links } from '@/config/links';
+import { links } from '@/config/config';
+import { cn, getCommandKey } from '@/lib/utils';
 
 export const CommandMenu = (): JSX.Element => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { setTheme } = useTheme();
 
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const down = (e: KeyboardEvent): void => {
       if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || e.key === '/') {
         if (
           (e.target instanceof HTMLElement && e.target.isContentEditable) ||
@@ -42,10 +41,12 @@ export const CommandMenu = (): JSX.Element => {
     };
 
     document.addEventListener('keydown', down);
-    return () => document.removeEventListener('keydown', down);
+    return () => {
+      document.removeEventListener('keydown', down);
+    };
   }, []);
 
-  const runCommand = React.useCallback((command: () => unknown) => {
+  const runCommand = useCallback((command: () => unknown) => {
     setOpen(false);
     command();
   }, []);
@@ -57,11 +58,13 @@ export const CommandMenu = (): JSX.Element => {
         className={cn(
           'relative h-8 w-full justify-start rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64',
         )}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       >
         <span className='hidden lg:inline-flex'>Search website...</span>
         <span className='inline-flex lg:hidden'>Search...</span>
-        <kbd className='pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex'>
+        <kbd className='pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 md:flex'>
           {getCommandKey()} K
         </kbd>
       </Button>
@@ -75,7 +78,9 @@ export const CommandMenu = (): JSX.Element => {
                 key={link.href}
                 value={link.label}
                 onSelect={() => {
-                  runCommand(() => router.push(link.href as string));
+                  runCommand(() => {
+                    router.push(link.href);
+                  });
                 }}
               >
                 <FileIcon className='mr-2 h-4 w-4' />
@@ -103,15 +108,33 @@ export const CommandMenu = (): JSX.Element => {
           ))} */}
           <CommandSeparator />
           <CommandGroup heading='Theme'>
-            <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme('light');
+                });
+              }}
+            >
               <Sun className='mr-2 h-4 w-4' />
               <span>Light</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme('dark'))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme('dark');
+                });
+              }}
+            >
               <Moon className='mr-2 h-4 w-4' />
               <span>Dark</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme('system'))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme('system');
+                });
+              }}
+            >
               <Laptop className='mr-2 h-4 w-4' />
               <span>System</span>
             </CommandItem>

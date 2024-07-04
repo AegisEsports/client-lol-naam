@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { Tooltip } from '@/components/ui/Tooltip';
 import {
   PlaceholderIcon,
   getIconClass,
 } from '@/components/riotIcons/PlaceholderIcon';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
 
 export const getDDragonItems = (patch?: string): string =>

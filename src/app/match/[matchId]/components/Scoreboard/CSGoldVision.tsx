@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
@@ -26,14 +25,7 @@ export const CSGoldVision = ({
   size = 'md',
   group: key,
 }: CSGoldVisionProps): JSX.Element => {
-  const [group, setGroup] = useState<'gold' | 'cs' | 'vision'>('gold');
-  useScoreboardControls(
-    ['gold', 'cs', 'vision'],
-    (string) => {
-      setGroup(string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision');
-    },
-    key,
-  );
+  const { value: group } = useScoreboardControls(['gold', 'cs', 'vision'], key);
 
   return (
     <div

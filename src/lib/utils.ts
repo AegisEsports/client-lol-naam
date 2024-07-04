@@ -83,19 +83,19 @@ export type OS = 'Mac OS' | 'iOS' | 'Windows' | 'Android' | 'Linux' | undefined;
 export const getOS = (): OS => {
   if (typeof window === 'undefined') return undefined;
 
-  const userAgent = window.navigator.userAgent ?? '';
+  const userAgent = window.navigator.userAgent;
 
   let os: OS;
 
-  if (/Mac/.test(userAgent)) {
+  if (userAgent.includes('Mac')) {
     os = 'Mac OS';
   } else if (/iPhone|iPad|iPod/.test(userAgent)) {
     os = 'iOS';
-  } else if (/Win/.test(userAgent)) {
+  } else if (userAgent.includes('Win')) {
     os = 'Windows';
-  } else if (/Android/.test(userAgent)) {
+  } else if (userAgent.includes('Android')) {
     os = 'Android';
-  } else if (/Linux/.test(userAgent)) {
+  } else if (userAgent.includes('Linux')) {
     os = 'Linux';
   }
 

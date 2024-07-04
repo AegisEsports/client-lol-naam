@@ -1,6 +1,7 @@
-import plugin from 'tailwindcss/plugin';
-import { fontFamily } from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
+import { type RecursiveKeyValuePair } from 'tailwindcss/types/config';
 
 const config = {
   darkMode: ['class'],
@@ -92,7 +93,13 @@ const config = {
     plugin(({ matchUtilities, theme }) => {
       matchUtilities(
         {
-          'text-glow': (value) => ({
+          'text-glow': (
+            value:
+              | string
+              | string[]
+              | RecursiveKeyValuePair<string, string | string[] | null>
+              | null,
+          ) => ({
             textShadow: value,
           }),
         },

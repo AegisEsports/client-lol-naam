@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
 import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
 import { cn } from '@/lib/utils';
@@ -14,32 +13,17 @@ export const Controller = ({
   group,
   size = 'md',
 }: ControllerProps): JSX.Element => {
-  const [group1, setGroup1] = useState<'damage' | 'damageTaken' | 'cc'>(
-    'damage',
-  );
-  const [group2, setGroup2] = useState<'gold' | 'cs' | 'vision'>('gold');
+  const {
+    moveLeft: left1,
+    moveRight: right1,
+    value: group1,
+  } = useScoreboardControls(['damage', 'damageTaken', 'cc'], group);
 
-  const { moveLeft: left1, moveRight: right1 } = useScoreboardControls(
-    ['damage', 'damageTaken', 'cc'],
-    (string) => {
-      setGroup1(
-        string === 'damage'
-          ? 'damage'
-          : string === 'damageTaken'
-            ? 'damageTaken'
-            : 'cc',
-      );
-    },
-    `${group}-dmg`,
-  );
-
-  const { moveLeft: left2, moveRight: right2 } = useScoreboardControls(
-    ['gold', 'cs', 'vision'],
-    (string) => {
-      setGroup2(string === 'gold' ? 'gold' : string === 'cs' ? 'cs' : 'vision');
-    },
-    `${group}-gold`,
-  );
+  const {
+    moveLeft: left2,
+    moveRight: right2,
+    value: group2,
+  } = useScoreboardControls(['gold', 'cs', 'vision'], group);
 
   const buttonClassName =
     'cursor-pointer select-none text-gray-400 hover:text-white transition-all duration-300';

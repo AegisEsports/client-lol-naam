@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { Tooltip } from '@/components/ui/Tooltip';
 import { PlaceholderIcon } from '@/components/riotIcons/PlaceholderIcon';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { useChampionDetails } from '@/lib/hooks';
 import { cn, getSpellUrl } from '@/lib/utils';
 

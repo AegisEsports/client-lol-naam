@@ -11,3 +11,5 @@ export const links: Link[] = [
     label: 'Match History',
   },
 ];
+
+export const name = 'Stats';

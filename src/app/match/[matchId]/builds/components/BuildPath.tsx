@@ -13,13 +13,13 @@ export const BuildPath = ({ build, patch }: BuildPathProps): JSX.Element => (
     {build.map(({ minute, items }) => {
       return (
         <div
-          className='flex flex-col items-center text-sm text-gray-500 dark:text-gray-400 p-2 shrink-0'
+          className='flex flex-col items-center text-sm text-gray-500 dark:text-gray-400 p-2'
           key={minute}
         >
-          <div className='flex bg-secondary rounded-lg p-2 gap-2'>
+          <div className='flex flex-wrap min-w-16 bg-secondary rounded-lg p-2 gap-2'>
             {items.map(({ id, sold, quantity }, index) => {
               return (
-                <div className='relative h-12 w-12' key={index}>
+                <div className='relative h-12 w-12 shrink-0' key={index}>
                   <ClientItem patch={patch} key={index} item={id} size='lg' />
                   {sold && (
                     <div className='pointer-events-none absolute bottom-0 rounded-lg right-0 top-0 left-0 bg-gray-800/50'>

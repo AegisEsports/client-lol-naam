@@ -1,46 +1,25 @@
-'use client';
-
-import Link from 'next/link';
-import { H1 } from '@/components/ui/H1';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { CommandMenu } from '@/components/CommandMenu';
-import { usePathname } from 'next/navigation';
+import { DesktopNav } from '@/components/DesktopNav';
+import { MobileNav } from '@/components/MobileNav';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { cn } from '@/lib/utils';
-import { links } from '@/config/links';
 
-export const NavBar = (): JSX.Element => {
-  const pathname = usePathname();
+export const navStyles =
+  'sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-separate';
 
-  return (
-    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-      <div className='container flex h-14 max-w-screen-2xl items-center'>
-        {/* todo: add mobile nav */}
-        <Link href='/' className='mr-6'>
-          <H1 className='transition duration-200'>Stats</H1>
-        </Link>
-        <nav className='flex items-center gap-4 text-sm lg:gap-6'>
-          {links.map(({ href, label }) => (
-            <Link
-              key={label}
-              href={href}
-              className={cn(
-                'transition-colors hover:text-foreground/80',
-                pathname === href ? 'text-foreground' : 'text-foreground/60',
-              )}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
-          <div className='w-full flex-1 md:w-auto md:flex-none'>
-            <CommandMenu />
-          </div>
-          <nav className='flex items-center'>
-            <ThemeToggle />
-          </nav>
+export const NavBar = (): JSX.Element => (
+  <header className={cn(navStyles, 'border-b')}>
+    <div className='container flex items-center h-14 max-w-screen-2xl'>
+      <DesktopNav />
+      <MobileNav />
+      <div className='flex items-center justify-between flex-1 space-x-2 md:justify-end'>
+        <div className='flex-1 w-full md:w-auto md:flex-none'>
+          <CommandMenu />
         </div>
+        <nav className='flex items-center'>
+          <ThemeToggle />
+        </nav>
       </div>
-    </header>
-  );
-};
+    </div>
+  </header>
+);

@@ -12,7 +12,7 @@ export default async function Page({
 
   return (
     <Wrapper page='overview' matchId={params.matchId}>
-      <div className='w-fit mx-auto'>
+      <div className='w-[42rem] grow mx-auto flex'>
         <GoldChart match={match} timeline={timeline} />
       </div>
     </Wrapper>

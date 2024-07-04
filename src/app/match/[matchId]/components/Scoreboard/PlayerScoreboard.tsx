@@ -177,7 +177,7 @@ export const PlayerScoreboard = ({
       maxDamageTaken={maxDamageTaken}
       maxCC={maxCC}
       size={size}
-      group={`${group}-dmg`}
+      group={group}
     />
   );
 
@@ -189,7 +189,7 @@ export const PlayerScoreboard = ({
       controlWards={visionWardsBoughtInGame}
       wardsPlaced={wardsPlaced}
       wardsKilled={wardsKilled}
-      group={`${group}-gold`}
+      group={group}
       size={size}
     />
   );
