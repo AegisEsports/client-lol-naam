@@ -28,3 +28,35 @@ export const getRecentMatches = async (puuid: string): Promise<string[]> =>
   get(
     `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=20&api_key=${process.env.RIOT_TOKEN}`,
   ) as Promise<string[]>;
+
+export type MatchParticipant = {
+  displayName: string;
+  puuid: string;
+  championId: number;
+  participantId: number;
+  teamId: number;
+  // todo: add more stuff from player/team backend
+};
+
+export type Participants = Record<number, MatchParticipant>;
+
+export const getMatchParticipants = (
+  match: Riot.MatchV5.Match,
+): Record<number, MatchParticipant> => {
+  const entries: [number, MatchParticipant][] = match.info.participants.map(
+    (participant) => {
+      return [
+        participant.participantId,
+        {
+          displayName: participant.summonerName,
+          puuid: participant.puuid,
+          championId: participant.championId,
+          participantId: participant.participantId,
+          teamId: participant.teamId,
+        },
+      ];
+    },
+  );
+
+  return Object.fromEntries(entries);
+};

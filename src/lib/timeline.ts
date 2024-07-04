@@ -1,4 +1,5 @@
 import { groupBy } from 'lodash-es';
+import { type MatchParticipant, type Participants } from '@/lib/match';
 
 /** Represents one shop visit. */
 export type ItemBuild = {
@@ -178,11 +179,14 @@ export type GoldTimestamp = { timestamp: number; gold: number };
  * Aggregates gold data for each timestamp for each player and team.
  */
 export const getGoldInfo = (
-  match: Riot.MatchV5.Match,
+  players: Participants,
   timeline: Riot.MatchV5.Timeline,
 ): {
   /** Each player's total gold at each timestamp. */
-  participants: Record<number, GoldTimestamp[]>;
+  participants: Record<
+    number,
+    { participant: MatchParticipant; timestamps: GoldTimestamp[] }
+  >;
   /** Blue team's total gold at each timestamp. */
   blue: GoldTimestamp[];
   /** Red team's total gold at each timestamp. */
@@ -190,15 +194,13 @@ export const getGoldInfo = (
   /** How ahead blue team is at each timestamp. */
   difference: GoldTimestamp[];
 } => {
-  const participantGold: Record<number, GoldTimestamp[]> = Object.fromEntries(
-    timeline.info.participants.map(({ participantId }) => [participantId, []]),
-  );
-
-  // TODO: Create player util to get team, profile, etc.
-  const whichTeam = Object.fromEntries(
-    match.info.participants.map(({ participantId, teamId }) => [
+  const participantGold: Record<
+    number,
+    { participant: MatchParticipant; timestamps: GoldTimestamp[] }
+  > = Object.fromEntries(
+    timeline.info.participants.map(({ participantId }) => [
       participantId,
-      teamId,
+      { participant: players[participantId], timestamps: [] },
     ]),
   );
 
@@ -208,12 +210,15 @@ export const getGoldInfo = (
   timeline.info.frames.forEach(({ timestamp, participantFrames }) => {
     Object.entries(participantFrames).forEach(
       ([participantId, { totalGold: gold }]) => {
-        participantGold[parseInt(participantId)].push({
+        const { timestamps, participant } =
+          participantGold[parseInt(participantId)];
+
+        timestamps.push({
           timestamp,
           gold,
         });
 
-        if (whichTeam[parseInt(participantId)] === 100) {
+        if (participant.teamId === 100) {
           blueGold.push({ timestamp, gold });
         } else {
           redGold.push({ timestamp, gold });
