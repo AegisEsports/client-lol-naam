@@ -184,7 +184,7 @@ export const OverviewDashboard = ({
         setMinute,
       }}
     >
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 px-2'>
         <div className='flex flex-wrap items-center justify-between gap-3'>
           <ViewSelector />
           <PlayerSelector />

@@ -25,7 +25,7 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
   const skillOrders = getSkillOrders(timeline);
 
   return (
-    <div className='flex flex-col w-screen gap-4 p-4'>
+    <div className='flex flex-col w-screen gap-4 pt-4'>
       <ScrollArea orientation='horizontal'>
         <div className='flex gap-2 pb-3 mx-auto w-fit'>
           {match.info.participants.map(
@@ -51,13 +51,13 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
           )}
         </div>
       </ScrollArea>
-      <div className='text-xl font-semibold text-center'>
+      <div className='text-xl font-semibold text-center px-4'>
         Items
         <div className='p-2 mx-auto mt-1 border rounded-lg border-border w-fit'>
           <BuildPath patch={patch} build={builds[selected]} />
         </div>
       </div>
-      <div className='text-xl font-semibold text-center'>
+      <div className='text-xl font-semibold text-center px-4'>
         Skill Order
         <ScrollArea orientation='horizontal'>
           <div className='p-2 mx-auto mt-1 mb-3 border rounded-lg border-border w-fit'>

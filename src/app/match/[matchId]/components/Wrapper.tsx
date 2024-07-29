@@ -45,7 +45,7 @@ export const Wrapper = ({
         </div>
       </div>
       <ScrollArea orientation='both' className='flex grow'>
-        <div className='flex flex-col overflow-hidden mt-3 max-w-screen-2xl mx-auto px-4'>
+        <div className='flex flex-col overflow-hidden mt-3 max-w-screen-2xl mx-auto'>
           {children}
         </div>
       </ScrollArea>
