@@ -1,5 +1,5 @@
-import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
-import { GoldChart } from '@/app/match/[matchId]/overview/components/GoldChart';
+import { Wrapper } from '../components/Wrapper';
+import { OverviewDashboard } from './components/OverviewDashboard';
 import { getMatch, getMatchParticipants, getTimeline } from '@/lib/match';
 
 export default async function Page({
@@ -13,9 +13,7 @@ export default async function Page({
 
   return (
     <Wrapper page='overview' matchId={params.matchId}>
-      <div className='w-[42rem] grow mx-auto flex'>
-        <GoldChart timeline={timeline} players={players} />
-      </div>
+      <OverviewDashboard timeline={timeline} players={players} />
     </Wrapper>
   );
 }

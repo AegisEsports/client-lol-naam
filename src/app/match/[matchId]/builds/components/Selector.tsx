@@ -33,7 +33,7 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
               return (
                 <div
                   className={cn(
-                    'flex flex-col items-center gap-2 w-36 hover:bg-foreground/10 rounded-lg p-2 transition-all duration-300 shrink-0',
+                    'flex flex-col items-center gap-2 w-28 hover:bg-foreground/10 rounded-lg p-2 transition-all duration-300 shrink-0 cursor-pointer text-sm',
                     {
                       'bg-foreground/5': selectedIndex === index,
                     },
@@ -44,7 +44,7 @@ export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
                   }}
                 >
                   <ChampIcon champId={championId} size='lg' />
-                  <div>{summonerName}</div>
+                  <div className='truncate'>{summonerName}</div>
                 </div>
               );
             },

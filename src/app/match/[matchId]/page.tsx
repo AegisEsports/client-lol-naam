@@ -4,7 +4,7 @@ import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
 import { getMatch } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 
-export const exampleMatches = ['4959299173'];
+export const exampleMatches = ['4947148802', '4959299173'];
 
 export function generateStaticParams(): { matchId: string }[] {
   return exampleMatches.map((matchId) => ({ matchId }));

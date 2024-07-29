@@ -7,10 +7,15 @@ export const cn = (...inputs: ClassValue[]): string => {
 };
 
 /** Format time duration (s) to human-readable format. */
-export const formatSeconds = (duration: number): string => {
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
-  return `${minutes}:${+seconds < 10 ? '0' : ''}${seconds}`;
+export const formatSeconds = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${minutes}:${+remainder < 10 ? '0' : ''}${remainder}`;
+};
+
+/** Format time duration (ms) to a human-readable format. */
+export const formatTimestamp = (milliseconds: number): string => {
+  return formatSeconds(Math.floor(milliseconds / 1000));
 };
 
 /** Fetcher function for useSWR. */

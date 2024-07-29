@@ -34,7 +34,7 @@ export type MatchParticipant = {
   puuid: string;
   championId: number;
   participantId: number;
-  teamId: number;
+  teamId: 100 | 200;
   // todo: add more stuff from player/team backend
 };
 

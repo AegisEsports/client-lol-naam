@@ -141,9 +141,7 @@ export const getSkillOrders = (
   timeline.info.frames.forEach((frame) => {
     frame.events
       .filter(
-        (
-          event,
-        ): event is Riot.MatchV5.TimelineEvent & { type: 'SKILL_LEVEL_UP' } =>
+        (event): event is Riot.MatchV5.TimelineEvent<'SKILL_LEVEL_UP'> =>
           event.type === 'SKILL_LEVEL_UP',
       )
       .forEach((event) => {
@@ -166,37 +164,38 @@ export const getSkillOrders = (
   );
 };
 
-const aggregateGoldValues = (timestamps: GoldTimestamp[]): GoldTimestamp[] =>
-  Object.entries(groupBy(timestamps, 'timestamp')).map(([, goldValues]) => {
-    const gold = goldValues.reduce((acc, { gold }) => acc + gold, 0);
-    return { timestamp: goldValues[0].timestamp, gold };
+const aggregateStatValues = (timestamps: StatTimestamp[]): StatTimestamp[] =>
+  Object.entries(groupBy(timestamps, 'timestamp')).map(([, values]) => {
+    const value = values.reduce((acc, { value }) => acc + value, 0);
+    return { timestamp: values[0].timestamp, value };
   });
 
 /** The total gold at a certain timestamp. */
-export type GoldTimestamp = { timestamp: number; gold: number };
+export type StatTimestamp = { timestamp: number; value: number };
 
 /**
  * Aggregates gold data for each timestamp for each player and team.
  */
-export const getGoldInfo = (
+export const getStatInfo = (
   players: Participants,
   timeline: Riot.MatchV5.Timeline,
+  stat: (participantFrame: Riot.MatchV5.ParticipantFrame) => number,
 ): {
   /** Each player's total gold at each timestamp. */
   participants: Record<
     number,
-    { participant: MatchParticipant; timestamps: GoldTimestamp[] }
+    { participant: MatchParticipant; timestamps: StatTimestamp[] }
   >;
   /** Blue team's total gold at each timestamp. */
-  blue: GoldTimestamp[];
+  blue: StatTimestamp[];
   /** Red team's total gold at each timestamp. */
-  red: GoldTimestamp[];
+  red: StatTimestamp[];
   /** How ahead blue team is at each timestamp. */
-  difference: GoldTimestamp[];
+  difference: StatTimestamp[];
 } => {
-  const participantGold: Record<
+  const participantStat: Record<
     number,
-    { participant: MatchParticipant; timestamps: GoldTimestamp[] }
+    { participant: MatchParticipant; timestamps: StatTimestamp[] }
   > = Object.fromEntries(
     timeline.info.participants.map(({ participantId }) => [
       participantId,
@@ -204,38 +203,38 @@ export const getGoldInfo = (
     ]),
   );
 
-  const blueGold: GoldTimestamp[] = [];
-  const redGold: GoldTimestamp[] = [];
+  const blueStat: StatTimestamp[] = [];
+  const redStat: StatTimestamp[] = [];
 
   timeline.info.frames.forEach(({ timestamp, participantFrames }) => {
-    Object.entries(participantFrames).forEach(
-      ([participantId, { totalGold: gold }]) => {
-        const { timestamps, participant } =
-          participantGold[parseInt(participantId)];
+    Object.entries(participantFrames).forEach(([participantId, frame]) => {
+      const value = stat(frame);
 
-        timestamps.push({
-          timestamp,
-          gold,
-        });
+      const { timestamps, participant } =
+        participantStat[parseInt(participantId)];
 
-        if (participant.teamId === 100) {
-          blueGold.push({ timestamp, gold });
-        } else {
-          redGold.push({ timestamp, gold });
-        }
-      },
-    );
+      timestamps.push({
+        timestamp,
+        value,
+      });
+
+      if (participant.teamId === 100) {
+        blueStat.push({ timestamp, value });
+      } else {
+        redStat.push({ timestamp, value });
+      }
+    });
   });
 
-  const difference = aggregateGoldValues([
-    ...blueGold,
-    ...redGold.map(({ timestamp, gold }) => ({ timestamp, gold: -gold })),
+  const difference = aggregateStatValues([
+    ...blueStat,
+    ...redStat.map(({ timestamp, value }) => ({ timestamp, value: -value })),
   ]);
 
   return {
-    participants: participantGold,
-    blue: aggregateGoldValues(blueGold),
-    red: aggregateGoldValues(redGold),
+    participants: participantStat,
+    blue: aggregateStatValues(blueStat),
+    red: aggregateStatValues(redStat),
     difference,
   };
 };

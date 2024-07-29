@@ -36,18 +36,26 @@ export type TooltipProps = {
   tooltip: ReactNode;
   children?: ReactNode;
   placement?: 'top' | 'right' | 'bottom' | 'left';
+  disabled?: boolean;
   delay?: number;
+  className?: string;
 };
 
 export const Tooltip = ({
   tooltip = 'Tooltip',
   placement = 'top',
   children,
+  disabled = false,
   delay = 300,
+  className = '',
 }: TooltipProps): JSX.Element => (
   <TooltipProvider delayDuration={delay}>
     <TooltipRoot>
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger
+        className={cn(disabled && 'pointer-events-none', className)}
+      >
+        {children}
+      </TooltipTrigger>
       <TooltipContent className='max-w-sm [&_li]:ml-4' side={placement}>
         {tooltip}
       </TooltipContent>
