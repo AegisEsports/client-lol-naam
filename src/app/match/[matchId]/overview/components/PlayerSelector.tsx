@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { useOverview } from './OverviewDashboard';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { Button } from '@/components/ui/Button';
 import { Tooltip } from '@/components/ui/Tooltip';

@@ -1,14 +1,21 @@
 'use client';
 
-import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
+import { useScoreboardControls } from './use-scoreboard-controls';
 import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
 import { cn } from '@/lib/utils';
 
+/** Props for {@link Controller}. */
 export type ControllerProps = {
+  /** The unique key to use for the carousel controller. */
   group: string;
+  /** The size of the scoreboard component. */
   size?: 'sm' | 'md' | 'lg';
 };
 
+/**
+ * A component of the scoreboard header to control the data showing in the
+ * rightmost columns.
+ */
 export const Controller = ({
   group,
   size = 'md',

@@ -1,18 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { BuildPath } from '@/app/match/[matchId]/builds/components/BuildPath';
-import { SkillOrder } from '@/app/match/[matchId]/builds/components/SkillOrder';
+import { BuildPath } from './BuildPath';
+import { SkillOrder } from './SkillOrder';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { getItemBuilds, getSkillOrders } from '@/lib/timeline';
 import { cn, getPatch } from '@/lib/utils';
 
+/** Props for {@link Selector}. */
 export type SelectorProps = {
+  /** Riot match data. */
   match: Riot.MatchV5.Match;
+  /** Riot timeline data. */
   timeline: Riot.MatchV5.Timeline;
 };
 
+/** The client side build path page. */
 export const Selector = ({ match, timeline }: SelectorProps): JSX.Element => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 

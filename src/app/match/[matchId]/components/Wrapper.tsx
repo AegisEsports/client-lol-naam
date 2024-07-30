@@ -4,12 +4,17 @@ import { MenuButton } from '@/components/ui/MenuButton';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { cn } from '@/lib/utils';
 
+/** Props for {@link Wrapper}. */
 export type WrapperProps = {
+  /** Which page is currently selected. */
   page: 'scoreboard' | 'builds' | 'overview';
+  /** The match ID of the match. */
   matchId: string;
+  /** The content of the page. */
   children: ReactNode;
 };
 
+/** A nav header for the scoreboard page. */
 export const Wrapper = ({
   children,
   page,

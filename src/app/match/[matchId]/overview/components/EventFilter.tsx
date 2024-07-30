@@ -1,6 +1,6 @@
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { useOverview } from './OverviewDashboard';
 import { Button } from '@/components/ui/Button';
 import {
   Popover,

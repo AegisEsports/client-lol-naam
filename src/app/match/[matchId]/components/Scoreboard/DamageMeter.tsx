@@ -1,21 +1,34 @@
 'use client';
 
 import { Star } from 'lucide-react';
-import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
+import { useScoreboardControls } from './use-scoreboard-controls';
 import { cn } from '@/lib/utils';
 
+/** Props for {@link DamageMeter}. */
 export type DamageMeterProps = {
+  /** A player's total damage dealt to champions at the end of a match. */
   damage: number;
+  /** The most total damage dealt to champions by any player in the match. */
   maxDamage: number;
+  /** A player's total damage taken from champions at the end of the match. */
   damageTaken: number;
+  /** The most damage taken from champions by any player in the match. */
   maxDamageTaken: number;
+  /** A player's total CC-score at the end of the match. */
   cc: number;
+  /** The highest CC-score of any player in the match. */
   maxCC: number;
-  matchId?: string;
+  /** The size of the scoreboard component. */
   size?: 'sm' | 'md' | 'lg';
+  /** The key of the controller to use to navigate. */
   group?: string;
 };
 
+/**
+ * Shows the damage, damage taken, and CC-score stats of a player at the end of
+ * a match in the form of a bar, navigable using the scoreboard column
+ * controller.
+ */
 export const DamageMeter = ({
   size = 'md',
   damage,
