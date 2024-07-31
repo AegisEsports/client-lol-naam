@@ -49,6 +49,7 @@ export const ChampScoreboard = async ({
           WebkitMaskPositionX:
             size === 'lg' ? '25px' : size === 'md' ? '20px' : '15px',
         }}
+        priority
       />
       <div
         className={cn('absolute bg-gradient-to-r h-full from-background z-10', {

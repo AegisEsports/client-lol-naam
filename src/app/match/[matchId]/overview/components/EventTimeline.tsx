@@ -52,6 +52,7 @@ export const EventTimeline = (): JSX.Element => {
         />
         {blueMinutes.map((minute) => (
           <div
+            key={minute}
             className='absolute rounded-full h-3 w-3 -top-[4.5px] bg-blue-400 hover:scale-125 transition cursor-pointer'
             style={{ left: (minute / length) * size }}
             onClick={() => {
@@ -63,6 +64,7 @@ export const EventTimeline = (): JSX.Element => {
       <div className='absolute h-0.5 bg-border bottom-6 left-6 right-6'>
         {redMinutes.map((minute) => (
           <div
+            key={minute}
             className='absolute rounded-full h-3 w-3 -top-[4.5px] bg-red-400 hover:scale-125 transition cursor-pointer'
             style={{ left: (minute / length) * size }}
             onClick={() => {

@@ -28,6 +28,7 @@ export const ChampIcon = ({
       height={360}
       alt={`Champion ${champId}`}
       className='object-center scale-[115%]'
+      priority
     />
   </div>
 );
