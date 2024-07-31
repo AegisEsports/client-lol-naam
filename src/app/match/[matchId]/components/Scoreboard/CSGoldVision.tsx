@@ -1,20 +1,33 @@
 'use client';
 
-import { useScoreboardControls } from '@/app/match/[matchId]/hooks';
+import { useScoreboardControls } from './use-scoreboard-controls';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
 
+/** Props for {@link CSGoldVision}. */
 export type CSGoldVisionProps = {
+  /** A player's total gold at the end of a match. */
   gold: number;
+  /** A player's total farm at the end of a match. */
   cs: number;
+  /** The length of the game, in seconds. */
   timePlayed: number;
+  /** The number of control wards a player purchased by the end of a match. */
   controlWards: number;
+  /** The number of wards a player placed by the end of a match. */
   wardsPlaced: number;
+  /** The number of wards a player killed by the end of a match. */
   wardsKilled: number;
+  /** The size of the scoreboard component. */
   size?: 'sm' | 'md' | 'lg';
+  /** The key of the controller to use to navigate. */
   group?: string;
 };
 
+/**
+ * Shows the farm, gold, or vision stats of a player at the end of a match,
+ * navigable using the scoreboard column controller.
+ */
 export const CSGoldVision = ({
   gold,
   cs,

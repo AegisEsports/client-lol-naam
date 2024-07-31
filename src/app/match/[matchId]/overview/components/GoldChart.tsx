@@ -17,8 +17,8 @@ import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import colors from 'tailwindcss/colors';
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
-import { type ViewOption } from '@/app/match/[matchId]/overview/components/ViewSelector';
+import { useOverview } from './OverviewDashboard';
+import { type ViewOption } from './ViewSelector';
 import { getStatInfo } from '@/lib/timeline';
 import { formatTimestamp } from '@/lib/utils';
 

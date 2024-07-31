@@ -3,15 +3,25 @@
 import { ScoreboardIcon } from '@/components/riotIcons/ScoreboardIcon';
 import { cn } from '@/lib/utils';
 
+/** Props for {@link TeamHeader}. */
 export type TeamHeaderProps = {
+  /** The name of the team. */
   teamName: string;
+  /** Whether the team won the match. */
   win: boolean;
+  /** The team's total kills. */
   kills: number;
+  /** The team's total deaths. */
   deaths: number;
+  /** The team's total assists. */
   assists: number;
+  /** The team's total gold. */
   gold: number;
+  /** The size of the scoreboard component. */
   size: 'sm' | 'md' | 'lg';
+  /** The objectives taken by the team. */
   objectives: Riot.MatchV5.Objective;
+  /** The team's bans in the match. */
   bans: Riot.MatchV5.Ban[];
 };
 
@@ -24,6 +34,7 @@ export const TeamHeader = ({
   deaths,
   assists,
   gold,
+  // TODO: Add bans/objectives data to scoreboard
 }: TeamHeaderProps): JSX.Element => {
   return (
     <div

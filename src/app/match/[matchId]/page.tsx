@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
-import { Scoreboard } from '@/app/match/[matchId]/components/Scoreboard';
-import { Wrapper } from '@/app/match/[matchId]/components/Wrapper';
+import { Scoreboard } from './components/Scoreboard';
+import { Wrapper } from './components/Wrapper';
 import { getMatch } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 

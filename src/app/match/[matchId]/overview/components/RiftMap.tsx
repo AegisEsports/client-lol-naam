@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { EventText } from '@/app/match/[matchId]/overview/components/EventList/EventText';
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { EventText } from './EventList/EventText';
+import { useOverview } from './OverviewDashboard';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { cn, formatTimestamp } from '@/lib/utils';
 

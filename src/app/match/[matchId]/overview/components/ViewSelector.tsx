@@ -1,6 +1,6 @@
 'use client';
 
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { useOverview } from './OverviewDashboard';
 import {
   Select,
   SelectContent,

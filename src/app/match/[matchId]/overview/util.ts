@@ -1,5 +1,5 @@
-import { type OverviewContextType } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
-import { defaultView } from '@/app/match/[matchId]/overview/components/ViewSelector';
+import { type OverviewContextType } from './components/OverviewDashboard';
+import { defaultView } from './components/ViewSelector';
 import { type Participants } from '@/lib/match';
 
 /** Empty overview context for useContext fallback. */

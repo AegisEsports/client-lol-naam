@@ -2,15 +2,25 @@
 
 import { create } from 'zustand';
 
+/** The type of the scoreboard controller store. */
 type ScoreboardController = {
+  /**
+   * A map of controller keys to a map of columns to which index is selected.
+   */
   valueMap: Map<string, Map<string, number>>;
+  /** Moves a specific column left. */
   moveLeft: (groupKey: string, values: string[]) => void;
+  /** Moves a specific column right. */
   moveRight: (groupKey: string, values: string[]) => void;
 };
 
+/**
+ * Returns a unique key for a list of strings.
+ */
 const getKey = (values: string[]): string =>
   `${values.join('-')}#${values.length}`;
 
+/** Creates a store handling scoreboard column controllers. */
 const useScoreboardStore = create<ScoreboardController>((set) => ({
   valueMap: new Map(),
   moveLeft: (groupKey: string, values: string[]): void => {
@@ -47,12 +57,18 @@ const useScoreboardStore = create<ScoreboardController>((set) => ({
   },
 }));
 
+/** A hook for creating and listening to a scoreboard value controller. */
 export const useScoreboardControls = (
+  /** The list of values within this column. */
   values: string[],
+  /** A unique key for this controller. */
   name?: string,
 ): {
+  /** Moves the column left. */
   moveLeft: () => void;
+  /** Moves the column right. */
   moveRight: () => void;
+  /** The currently selected value. */
   value: string;
 } => {
   const { moveLeft, moveRight, valueMap } = useScoreboardStore();

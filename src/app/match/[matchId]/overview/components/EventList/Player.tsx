@@ -1,4 +1,4 @@
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { useOverview } from '../OverviewDashboard';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { cn } from '@/lib/utils';
 

@@ -3,11 +3,19 @@
 import { ClientItem } from '@/components/riotIcons/client/ClientItem';
 import { type ItemBuild } from '@/lib/timeline';
 
+/** Props for {@link BuildPath}. */
 export type BuildPathProps = {
+  /** The full list of item transactions of one player in a match. */
   build: ItemBuild;
+  /**
+   * The patch the match is played on, for the purpose of grabbing item assets. */
   patch: string;
 };
 
+/**
+ * A component representing a list of items built and sold by a player in a
+ * match.
+ */
 export const BuildPath = ({ build, patch }: BuildPathProps): JSX.Element => (
   <div className='flex flex-wrap w-full'>
     {build.map(({ minute, items }) => {

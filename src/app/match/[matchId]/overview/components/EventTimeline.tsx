@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import ResizeObserver from 'react-resize-observer';
-import { useOverview } from '@/app/match/[matchId]/overview/components/OverviewDashboard';
+import { useOverview } from './OverviewDashboard';
 
 /** Shows a timeline of events by minute for filtering. */
 export const EventTimeline = (): JSX.Element => {
