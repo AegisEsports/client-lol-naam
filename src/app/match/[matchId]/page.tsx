@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Scoreboard } from './components/Scoreboard';
-import { getMatch } from '@/lib/match';
+import { StatTable } from '@/app/match/[matchId]/components/StatTable';
+import { getMatch, getMatchParticipants } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
 
 export const exampleMatches = ['4947148802', '4959299173'];
@@ -15,6 +16,8 @@ export default async function Page({
   params: { matchId: string };
 }): Promise<JSX.Element> {
   const data = await getMatch(`NA1_${params.matchId}`);
+
+  const players = getMatchParticipants(data);
 
   return (
     <div className='flex flex-col p-4 pt-0 mx-auto'>
@@ -36,6 +39,8 @@ export default async function Page({
       <div className='flex lg:hidden'>
         <Scoreboard matchData={data} size='sm' />
       </div>
+      <div className='h-8' />
+      <StatTable match={data} players={players} />
     </div>
   );
 }
