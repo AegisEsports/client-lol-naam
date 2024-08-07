@@ -1,10 +1,9 @@
 import { format } from 'date-fns';
 import { Scoreboard } from './components/Scoreboard';
 import { StatTable } from '@/app/match/[matchId]/components/StatTable';
+import { exampleMatches } from '@/config/config';
 import { getMatch, getMatchParticipants } from '@/lib/match';
 import { formatSeconds, getPatch } from '@/lib/utils';
-
-export const exampleMatches = ['4947148802', '4959299173'];
 
 export function generateStaticParams(): { matchId: string }[] {
   return exampleMatches.map((matchId) => ({ matchId }));
