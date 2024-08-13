@@ -170,11 +170,11 @@ const aggregateStatValues = (timestamps: StatTimestamp[]): StatTimestamp[] =>
     return { timestamp: values[0].timestamp, value };
   });
 
-/** The total gold at a certain timestamp. */
+/** The total of a stat at a certain timestamp. */
 export type StatTimestamp = { timestamp: number; value: number };
 
 /**
- * Aggregates gold data for each timestamp for each player and team.
+ * Aggregates stat data for each timestamp for each player and team.
  */
 export const getStatInfo = (
   players: Participants,
@@ -186,9 +186,9 @@ export const getStatInfo = (
     number,
     { participant: MatchParticipant; timestamps: StatTimestamp[] }
   >;
-  /** Blue team's total gold at each timestamp. */
+  /** Blue team's total stat at each timestamp. */
   blue: StatTimestamp[];
-  /** Red team's total gold at each timestamp. */
+  /** Red team's total stat at each timestamp. */
   red: StatTimestamp[];
   /** How ahead blue team is at each timestamp. */
   difference: StatTimestamp[];

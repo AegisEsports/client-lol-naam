@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { BuildPath } from './BuildPath';
 import { SkillOrder } from './SkillOrder';
+import { Runes } from '@/app/match/[matchId]/builds/components/Runes';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { getItemBuilds, getSkillOrders } from '@/lib/timeline';
@@ -59,6 +60,12 @@ export const BuildPage = ({ match, timeline }: BuildPageProps): JSX.Element => {
         Items
         <div className='p-2 mx-auto mt-1 border rounded-lg border-border w-fit'>
           <BuildPath patch={patch} build={builds[selected]} />
+        </div>
+      </div>
+      <div className='text-xl font-semibold text-center px-4'>
+        Runes
+        <div className='p-2 mx-auto mt-1 border rounded-lg border-border w-fit'>
+          <Runes patch={patch} runes={participant.perks} />
         </div>
       </div>
       <div className='text-xl font-semibold text-center px-4'>
