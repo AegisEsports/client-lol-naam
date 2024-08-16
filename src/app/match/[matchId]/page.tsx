@@ -19,7 +19,7 @@ export default async function Page({
   const players = getMatchParticipants(data);
 
   return (
-    <div className='flex flex-col p-4 pt-0 mx-auto'>
+    <div className='flex flex-col p-4 mx-auto'>
       <div className='flex gap-2'>
         {format(data.info.gameStartTimestamp, 'M/d/yyyy')}
         <div className='text-gray-600'>·</div>

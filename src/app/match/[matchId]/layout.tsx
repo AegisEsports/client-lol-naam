@@ -8,6 +8,13 @@ import { MenuButton } from '@/components/ui/MenuButton';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { cn } from '@/lib/utils';
 
+const pages = [
+  { name: 'Scoreboard', path: '' },
+  { name: 'Graphs', path: 'graphs' },
+  { name: 'Builds', path: 'builds' },
+  { name: 'Overview', path: 'overview' },
+] as const;
+
 /** A nav header for the scoreboard page. */
 export default function Layout({
   children,
@@ -21,12 +28,7 @@ export default function Layout({
 
   const pathParts = pathname.split('/');
   const lastPath = pathParts[pathParts.length - 1];
-  const page =
-    lastPath === 'builds'
-      ? 'builds'
-      : lastPath === 'overview'
-        ? 'overview'
-        : 'scoreboard';
+  const selectedPage = pages.find(({ path }) => lastPath === path) ?? pages[0];
 
   return (
     <>
@@ -37,29 +39,20 @@ export default function Layout({
         )}
       >
         <div className='flex mx-auto w-fit'>
-          <MenuButton
-            href={`/match/${matchId}/`}
-            selected={page === 'scoreboard'}
-          >
-            Scoreboard
-          </MenuButton>
-          <MenuButton
-            href={`/match/${matchId}/builds`}
-            selected={page === 'builds'}
-          >
-            Builds
-          </MenuButton>
-          <MenuButton
-            href={`/match/${matchId}/overview`}
-            selected={page === 'overview'}
-          >
-            Overview
-          </MenuButton>
+          {pages.map((page) => (
+            <MenuButton
+              key={page.name}
+              href={`/match/${matchId}/${page.path}`}
+              selected={selectedPage === page}
+            >
+              {page.name}
+            </MenuButton>
+          ))}
         </div>
       </div>
-      <Suspense key={page} fallback={<Loading />}>
+      <Suspense key={selectedPage.name} fallback={<Loading />}>
         <ScrollArea orientation='both' className='flex grow'>
-          <div className='flex flex-col overflow-hidden mt-3 max-w-screen-2xl mx-auto'>
+          <div className='flex flex-col overflow-hidden max-w-screen-2xl mx-auto'>
             {children}
           </div>
         </ScrollArea>
