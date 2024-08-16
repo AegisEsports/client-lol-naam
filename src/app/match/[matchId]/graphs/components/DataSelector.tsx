@@ -84,11 +84,11 @@ export const DataSelector = ({
   };
 
   return (
-    <div className='flex flex-col w-64 gap-2 p-4'>
+    <div className='flex flex-col w-64 gap-2 p-4 text-sm'>
       {sections.map((section, row) => {
         const sectionChecked = selected.some(([r]) => r === row);
         return (
-          <>
+          <div key={section} className='flex flex-col w-full gap-2'>
             <div
               className='flex gap-2 items-center cursor-pointer'
               onClick={() => {
@@ -110,6 +110,7 @@ export const DataSelector = ({
 
               return (
                 <div
+                  key={dataset.name}
                   className='flex gap-2 items-center ml-4 cursor-pointer'
                   onClick={() => {
                     checked
@@ -126,7 +127,7 @@ export const DataSelector = ({
                 </div>
               );
             })}
-          </>
+          </div>
         );
       })}
     </div>

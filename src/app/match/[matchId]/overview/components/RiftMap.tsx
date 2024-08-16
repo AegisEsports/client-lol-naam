@@ -42,6 +42,7 @@ export const RiftMap = (): JSX.Element => {
         height={512}
         width={512}
         alt="Summoner's Rift Map"
+        priority
       />
       {killEvents.map((event, index) => (
         <div
