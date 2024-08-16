@@ -1,7 +1,7 @@
 import { StatRow } from './StatTable/StatRow';
 import { StatSection } from './StatTable/StatSection';
 import { ChampIcon } from '@/components/riotIcons/ChampIcon';
-import { type Participants } from '@/lib/match';
+import { type Participants, getLaneOpponent } from '@/lib/match';
 import { cn } from '@/lib/utils';
 
 /** Structure of sections/stats to show in the table. */
@@ -61,10 +61,60 @@ export type StatTableProps = {
   match: Riot.MatchV5.Match;
   /** List of players from the match. */
   players: Participants;
+  /** Optional timeline data for showing laning stats. */
+  timeline?: Riot.MatchV5.Timeline;
 };
 
 /** A stat table emulating the one in the League of Legends client. */
-export const StatTable = ({ match, players }: StatTableProps): JSX.Element => {
+export const StatTable = ({
+  match,
+  players,
+  timeline,
+}: StatTableProps): JSX.Element => {
+  /** Whether the timeline stats are valid to do timestamps at 14. */
+  const doLaneStats =
+    timeline !== undefined && timeline.info.frames.length > 15;
+
+  /** Gets the participant frame at 14 minutes of a participant. */
+  const getFrame = (
+    p: Riot.MatchV5.Participant,
+  ): Riot.MatchV5.ParticipantFrame | undefined =>
+    timeline?.info.frames[14].participantFrames[p.participantId];
+
+  /** Gets the difference in stat values from the lane opponent. */
+  const getDiff = (
+    p: Riot.MatchV5.Participant,
+    getter: (frame: Riot.MatchV5.ParticipantFrame) => number,
+  ): number => {
+    const frame = getFrame(p);
+    const opponentFrame = getFrame(getLaneOpponent(p.participantId, match));
+
+    if (frame === undefined || opponentFrame === undefined) return 0;
+
+    return getter(frame) - getter(opponentFrame);
+  };
+
+  const timelineTable: typeof statTable = doLaneStats
+    ? {
+        Laning: {
+          'Gold Difference at 14:00': (p) => getDiff(p, (a) => a.totalGold),
+          'Minions Killed Difference at 14:00': (p) =>
+            getDiff(p, (a) => a.minionsKilled + a.jungleMinionsKilled),
+          'Experience Difference at 14:00': (p) => getDiff(p, (a) => a.xp),
+          'Level Difference at 14:00': (p) => getDiff(p, (a) => a.level),
+          'Gold at 14:00': (p) => getFrame(p)?.totalGold ?? 0,
+          'Minions Killed at 14:00': (p) => {
+            const frame = getFrame(p);
+
+            if (!frame) return 0;
+            return frame.minionsKilled + frame.jungleMinionsKilled;
+          },
+          'Experience at 14:00': (p) => getFrame(p)?.xp ?? 0,
+          'Level at 14:00': (p) => getFrame(p)?.level ?? 0,
+        },
+      }
+    : {};
+
   return (
     <table className='text-[9px] lg:text-xs 2xl:text-base [&_td]:p-1'>
       <thead>
@@ -87,13 +137,20 @@ export const StatTable = ({ match, players }: StatTableProps): JSX.Element => {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(statTable).map(([label, functions]) => (
-          <StatSection key={label} label={label}>
-            {Array.from(Object.entries(functions)).map(([label, func]) => (
-              <StatRow key={label} match={match} label={label} getter={func} />
-            ))}
-          </StatSection>
-        ))}
+        {Object.entries({ ...timelineTable, ...statTable }).map(
+          ([label, functions]) => (
+            <StatSection key={label} label={label}>
+              {Array.from(Object.entries(functions)).map(([label, func]) => (
+                <StatRow
+                  key={label}
+                  match={match}
+                  label={label}
+                  getter={func}
+                />
+              ))}
+            </StatSection>
+          ),
+        )}
       </tbody>
     </table>
   );
